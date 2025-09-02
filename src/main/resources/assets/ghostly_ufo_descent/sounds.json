@@ -1,0 +1,56 @@
+{
+  "shit_king_eating": {
+    "subtitle": "shit_king_eating",
+    "sounds": [
+      {
+        "name": "legendary_rick:shit_king_eating",
+        "stream": false
+      }
+    ]
+  },
+  "rick_tools_using": {
+    "subtitle": "rick_tools_using",
+    "sounds": [
+      {
+        "name": "legendary_rick:rick_tools_using",
+        "stream": false
+      }
+    ]
+  },
+  "portal_gun_shooting": {
+    "subtitle": "gun shooting",
+    "sounds": [
+      {
+        "name": "legendary_rick:portal_gun_shooting",
+        "stream": false
+      }
+    ]
+  },
+  "and_here_we_go": {
+    "subtitle": "and here we go",
+    "sounds": [
+      {
+        "name": "legendary_rick:and_here_we_go",
+        "stream": false
+      }
+    ]
+  },
+  "mining_rick_ore": {
+    "subtitle": "mining rick ore",
+    "sounds": [
+      {
+        "name": "legendary_rick:mining_rick_ore",
+        "stream": false
+      }
+    ]
+  },
+  "portal_fluid_sound": {
+    "subtitle": "fluid sound",
+    "sounds": [
+      {
+        "name": "legendary_rick:portal_fluid_sound",
+        "stream": false
+      }
+    ]
+  }
+}

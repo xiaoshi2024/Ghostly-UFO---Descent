@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.xiaoshi2022.ghostly_ufo_descent.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "refmap": "ghostly_ufo_descent.refmap.json",
+  "plugin": "com.xiaoshi2022.ghostly_ufo_descent.mixin.MixinPlugin",
+  "mixins": [
+  ],
+  "client": [
+
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
