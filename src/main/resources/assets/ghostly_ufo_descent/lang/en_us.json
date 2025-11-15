@@ -1,0 +1,13 @@
+{
+  "itemGroup.ghostly_ufo_descent": "Example Mod Tab",
+  "block.ghostly_ufo_descent.example_block": "Example Block",
+  "item.ghostly_ufo_descent.example_item": "Example Item",
+
+  "ghostly_ufo_descent.configuration.title": "Ghostly UFO Descent Configs",
+  "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml": "Ghostly UFO Descent Configs",
+  "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml.title": "Ghostly UFO Descent Configs",
+  "ghostly_ufo_descent.configuration.items": "Item List",
+  "ghostly_ufo_descent.configuration.logDirtBlock": "Log Dirt Block",
+  "ghostly_ufo_descent.configuration.magicNumberIntroduction": "Magic Number Text",
+  "ghostly_ufo_descent.configuration.magicNumber": "Magic Number"
+}
