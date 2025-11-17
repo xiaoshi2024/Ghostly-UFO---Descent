@@ -1,9 +1,9 @@
 {
-  "itemGroup.ghostly_ufo_descent": "GhostLy UFO Tab",
+  "itemGroup.ghostly_ufo_descent": "异星鬼怪之路",
 
-  "block.ghostly_ufo_descent.ghostly_sarcophagus": "Ghostly Sarcophagus",
+  "block.ghostly_ufo_descent.ghostly_sarcophagus": "异星石棺",
 
-  "item.ghostly_ufo_descent.ghostly_scroll": "Ghostly Scroll",
+  "item.ghostly_ufo_descent.ghostly_scroll": "鬼怪卷轴",
 
   "ghostly_ufo_descent.configuration.title": "Ghostly UFO Descent Configs",
   "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml": "Ghostly UFO Descent Configs",
