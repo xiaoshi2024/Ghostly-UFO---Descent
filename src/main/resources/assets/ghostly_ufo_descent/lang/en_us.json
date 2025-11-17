@@ -2,8 +2,10 @@
   "itemGroup.ghostly_ufo_descent": "GhostLy UFO Tab",
 
   "block.ghostly_ufo_descent.ghostly_sarcophagus": "Ghostly Sarcophagus",
+  "block.ghostly_ufo_descent.ufo_l": "UFO Light",
 
   "item.ghostly_ufo_descent.ghostly_scroll": "Ghostly Scroll",
+  "item.ghostly_ufo_descent.ufo_l": "UFO Light",
 
   "ghostly_ufo_descent.configuration.title": "Ghostly UFO Descent Configs",
   "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml": "Ghostly UFO Descent Configs",

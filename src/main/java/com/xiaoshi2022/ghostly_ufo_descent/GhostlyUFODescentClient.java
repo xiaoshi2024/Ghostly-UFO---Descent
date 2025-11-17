@@ -1,6 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent;
 
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.GhostlySarcophagusRenderer;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.UfoL_blockentityRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
@@ -39,5 +40,7 @@ public class GhostlyUFODescentClient {
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BlockEntityRegistry.GHOSTLY_SARCOPHAGUS_BLOCK_ENTITY.get(),
                 GhostlySarcophagusRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityRegistry.UFO_L_BLOCK_ENTITY.get(),
+                UfoL_blockentityRenderer::new);
     }
 }

@@ -45,6 +45,7 @@ public class GhostlyUFODescent {
             .displayItems((parameters, output) -> {
                 output.accept(GHOSTLY_SCROLL.get());
                 output.accept(GHOSTLY_SARCOPHAGUS_ITEM.get());
+                output.accept(UFO_L_ITEM.get());
             }).build());
 
     // mod 类的构造函数是加载 mod 时运行的第一个代码。

@@ -1,6 +1,8 @@
 package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
 import com.xiaoshi2022.ghostly_ufo_descent.block.GhostlySarcophagus_block;
+import com.xiaoshi2022.ghostly_ufo_descent.block.UfoL_block;
+import com.xiaoshi2022.ghostly_ufo_descent.block.entity.UfoL_blockentity;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.LinkedList;
@@ -17,6 +19,9 @@ public final class BlockRegistry {
 
     public static final Supplier<GhostlySarcophagus_block> GHOSTLY_SARCOPHAGUS_BLOCK =
             BLOCKS.registerBlock("ghostly_sarcophagus", properties -> new GhostlySarcophagus_block(properties.noOcclusion()));
+
+    public static final Supplier<UfoL_block> UFO_L_BLOCK =
+            BLOCKS.registerBlock("ufo_l", properties -> new UfoL_block(properties.noOcclusion()));
 
 
 }
