@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "ghostly_ufo_descent:item/phagan_seeds",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
+  }
+}

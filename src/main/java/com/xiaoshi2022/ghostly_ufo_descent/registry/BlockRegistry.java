@@ -2,10 +2,8 @@ package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
 import com.xiaoshi2022.ghostly_ufo_descent.block.GhostlySarcophagus_block;
 import com.xiaoshi2022.ghostly_ufo_descent.block.UfoL_block;
-import com.xiaoshi2022.ghostly_ufo_descent.block.entity.UfoL_blockentity;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.LinkedList;
 import java.util.function.Supplier;
 
 import static com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent.MODID;

@@ -1,21 +1,74 @@
-Legendary Adventure of the Spectral Tribe
+# 鬼怪—降临 (Ghostly UFO Descent)
 
-Mod Background
-=======
+## 模组简介
+《鬼怪—降临》是一款基于NeoForge的Minecraft模组，将神秘的外星科技与古老的鬼怪力量融合在一起，为玩家带来全新的冒险体验。探索神秘的外星石棺，解锁超自然能力，与来自异次元的生物互动，揭开宇宙深处的秘密。
 
-This is a legendary adventure mod about spectral and exotic races. The origin of everything begins with that mysterious and ancient Extraterrestrial Sarcophagus...
+## 背景故事
+外星不死生物已经降临地球！等待你的调查！
 
-Its opening released incomprehensible supernatural powers, twisted the boundaries of reality, and awakened ancient slumbering clans. A legendary adventure across dimensions has now begun.
+今天，一架UFO飞过天空，你抬头望去，却发现它看起来像是鬼怪般的噬族（Phagans）所缠绕。在遥远的过去，这个先进的外星文明来到了主世界，留下了神秘的技术遗迹——鬼怪石棺。如今，这些石棺再次活跃，当玩家躺入石棺休眠时，灵体将进入深梦之界，一场跨越维度的传奇冒险就此拉开序幕...
 
-Installation & Getting Started
-=======
+## 模组功能
 
-This template repository can be directly cloned to get you started with a new mod. Simply create a new repository cloned from this one, by following the instructions provided by GitHub.
+### 方块
+- **鬼怪石棺 (Ghostly Sarcophagus)** - 模组的核心方块（需要精准采集才能挖掘）。实际上是一个外星科技设备，玩家可以联动接口提供能源。每当晚上时，石棺会自动打开，玩家可以躺进石棺休眠，此时玩家的躯体会留存在石棺中，灵体则会进入“深梦之界”维度(此时你的躯体在主世界中死亡了，那么你的灵体将留在深梦之界维度，除非你在那个世界重新凝具一体肉身！通过UFO方块放置传送祭坛会来！)
+- **UFO方块 (UFO Block)** - 外星科技的结晶，击败深梦之界中的极噬星龙后可获得。使用从NPC处获得的钥匙打开后，玩家可以进入UFO内部探索。
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+### 物品
+- **鬼怪卷轴 (Ghostly Scroll)** - 包含古老知识的神秘卷轴，用于召唤放置鬼怪石棺（在主世界中，玩家需要通过考古途径来挖掘残卷，才能获得）
+- **极噬种子 (Phagan Seeds)** - UFO投放到地面的特殊种子，在特定土壤中生长，最终会变成极噬星龙；（获取途径：需要在“深梦之界”维度中，找极噬星龙的巢穴，里的宝箱，即可获得）
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can:
+### 生物与实体
+- **鬼怪极噬 (Phagans)** - 兼具植物和鬼怪特征的外星生物，能够附身于亡灵生物的身体
+- **极噬星龙 (Phagan Star Dragon)** - 寄生玩家后的强大形态，拥有飞行和攻击能力
+- **星际深渊维度生物** - 强大的外星Boss
+- **孢子星人 (Spore Star Person)** - 在极噬种子中生长的外星生物，比较神秘的外星种族，玩家需要与他们中的族长互动才能获得UFO方块的钥匙
 
-Run gradlew --refresh-dependencies to refresh the local cache.
+### 维度
+- **星际深渊维度 (Star Abyss)** - 击败极噬星龙后开启的神秘维度,(if线)
 
-Run gradlew clean to reset everything (this does not affect your code) and then start the process again.
+### 游戏机制
+- **极噬种子生长周期**：法甘图斯花 → 果实 → 龙化
+- **寄生系统**：玩家获得极噬果实后会被寄生并变身为极噬星龙
+- **传送门系统**：击败极噬星龙后开启通往星际深渊维度的传送门
+- **深梦之界维度传送门** - 玩家需要通过鬼怪石棺，才能进入深梦之界维度
+- **深梦之界维度生物** - 神秘的外星生物，玩家需要与他们互动才能获得UFO方块的钥匙
+- **UFO方块放置传送祭坛** - 玩家需要在深梦之界维度中，放置UFO方块，才能进入主世界
+
+## 安装指南
+
+### 前置条件
+- Minecraft 1.21
+- NeoForge 最新版本
+- GeckoLib
+
+### 安装步骤
+1. 确保已安装 Minecraft 和 NeoForge
+2. 下载 Ghostly UFO Descent 模组的 JAR 文件
+3. 将下载的 JAR 文件放入 Minecraft 的 mods 文件夹中
+4. 启动游戏，享受全新的冒险体验！
+
+## 开发指南
+
+### 设置开发环境
+1. 克隆此仓库
+2. 在IDE中打开项目（推荐使用IntelliJ IDEA或Eclipse）
+3. 运行 `gradlew --refresh-dependencies` 刷新依赖
+4. 运行 `gradlew genEclipseRuns`（Eclipse）或 `gradlew genIntellijRuns`（IntelliJ IDEA）生成运行配置
+
+### 构建模组
+```bash
+./gradlew build
+```
+构建完成后，模组文件将位于 `build/libs/` 目录下。
+
+## 贡献
+欢迎提交问题报告和功能建议！如果您想直接贡献代码，请提交Pull Request。
+
+## 许可证
+该项目采用MIT许可证授权。
+
+## 鸣谢
+感谢所有为这个模组做出贡献的开发者和测试者！
+
+愿你在《鬼怪—降临》中找到乐趣，揭开外星文明的奥秘！

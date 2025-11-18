@@ -1,9 +1,8 @@
 package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
 import com.xiaoshi2022.ghostly_ufo_descent.item.GhostlyScroll;
-import com.xiaoshi2022.ghostly_ufo_descent.item.GhostlyUfoDescentItem;
+import com.xiaoshi2022.ghostly_ufo_descent.item.PhaganSeeds;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -19,6 +18,8 @@ public final class ItemRegistry {
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 
 	public static final Supplier<GhostlyScroll> GHOSTLY_SCROLL = ITEMS.registerItem("ghostly_scroll", GhostlyScroll::new);
+
+	public static final Supplier<PhaganSeeds> PHAGAN_SEEDS = ITEMS.registerItem("phagan_seeds", PhaganSeeds::new);
 
 	// Creates a new BlockItem with the id "examplemod:example_block", combining the namespace and path
 	public static final DeferredItem<BlockItem> GHOSTLY_SARCOPHAGUS_ITEM = ITEMS.registerSimpleBlockItem("ghostly_sarcophagus", GHOSTLY_SARCOPHAGUS_BLOCK);

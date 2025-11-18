@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry.BLOCK_ENTITIES;
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockRegistry.BLOCKS;
+import static com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry.ENTITY_TYPES;
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.ItemRegistry.*;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
@@ -44,6 +45,7 @@ public class GhostlyUFODescent {
             .icon(() -> GHOSTLY_SCROLL.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(GHOSTLY_SCROLL.get());
+                output.accept(PHAGAN_SEEDS.get());
                 output.accept(GHOSTLY_SARCOPHAGUS_ITEM.get());
                 output.accept(UFO_L_ITEM.get());
             }).build());
@@ -59,6 +61,7 @@ public class GhostlyUFODescent {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         BLOCK_ENTITIES.register(modEventBus);
+        ENTITY_TYPES.register(modEventBus);
 
 //        注册我们自己参加我们感兴趣的服务器和其他游戏活动。
 //        请注意，当且仅当我们希望 *this* 类 （GhostlyUFODescent） 直接响应事件时，这是必要的。
@@ -89,6 +92,8 @@ public class GhostlyUFODescent {
             event.accept((ItemLike) GHOSTLY_SCROLL);
         }
     }
+
+
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
