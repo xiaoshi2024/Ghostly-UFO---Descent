@@ -16,5 +16,7 @@
   "ghostly_ufo_descent.configuration.items": "Item List",
   "ghostly_ufo_descent.configuration.logDirtBlock": "Log Dirt Block",
   "ghostly_ufo_descent.configuration.magicNumberIntroduction": "Magic Number Text",
-  "ghostly_ufo_descent.configuration.magicNumber": "Magic Number"
+  "ghostly_ufo_descent.configuration.magicNumber": "Magic Number",
+  "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "You can only use the Ghost Stone Coffin at night.",
+  "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "There are monsters roaming nearby, making it impossible to sleep peacefully."
 }

@@ -25,7 +25,10 @@ public class GhostlySarcophagus_block extends BaseEntityBlock implements EntityB
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
     public GhostlySarcophagus_block(BlockBehaviour.Properties properties) {
-        super(properties);
+        super(properties
+                .strength(3.0F, 8.0F)  // 添加合适的硬度和抗性
+        );
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override

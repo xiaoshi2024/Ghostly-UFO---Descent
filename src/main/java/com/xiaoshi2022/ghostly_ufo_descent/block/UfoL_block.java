@@ -30,6 +30,7 @@ public class UfoL_block extends BaseEntityBlock implements EntityBlock {
 
     public UfoL_block(BlockBehaviour.Properties properties) {
         super(properties
+                .strength(4.0F, 8.0F)  // 添加合适的硬度和抗性
                 .noOcclusion()        // 无遮挡渲染
                 .isRedstoneConductor((state, getter, pos) -> false)  // 非完整方块，不传导红石
                 .isSuffocating((state, getter, pos) -> false)        // 不会造成窒息
