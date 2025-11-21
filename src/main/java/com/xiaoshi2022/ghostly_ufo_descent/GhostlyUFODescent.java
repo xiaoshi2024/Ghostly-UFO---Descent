@@ -30,13 +30,13 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.slf4j.Logger;
+import com.xiaoshi2022.ghostly_ufo_descent.world.dimension.DreamworldSafeSpawnHandler;
 
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry.BLOCK_ENTITIES;
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockRegistry.BLOCKS;
 
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry.ENTITY_TYPES;
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.ItemRegistry.*;
-import com.xiaoshi2022.ghostly_ufo_descent.event.SarcophagusEvents;
 import org.slf4j.LoggerFactory;
 
 import java.util.EnumMap;
@@ -107,12 +107,12 @@ public class GhostlyUFODescent {
         LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
 
         Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
-        
-        // 注册石棺事件监听器
-        NeoForge.EVENT_BUS.register(new SarcophagusEvents());
-        
+
 //        // 初始化维度注册
 //        com.xiaoshi2022.ghostly_ufo_descent.registry.DimensionRegistry.init();
+        
+        // 注册梦镜维度安全传送处理器
+        NeoForge.EVENT_BUS.register(DreamworldSafeSpawnHandler.class);
     }
 
     //将示例块项添加到构建块选项卡

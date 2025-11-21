@@ -20,6 +20,11 @@
 
   "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "你只能在晚上使用异星石棺。",
   "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "附近有怪物, 这使得你无法平静地入眠。",
+  "block.ghostly_ufo_descent.sarcophagus.entered_dream": "你已进入梦境世界。",
+  "block.ghostly_ufo_descent.sarcophagus.dimension_not_found": "梦境维度未找到。",
+  "block.ghostly_ufo_descent.sarcophagus.teleport_failed": "传送失败。",
+  "block.ghostly_ufo_descent.sarcophagus.soul_out_of_body": "灵魂出窍！你已离开躯体，进入灵魂状态。",
+  "block.ghostly_ufo_descent.sarcophagus.return_to_body": "右键点击你的躯体可以重返肉身。",
   "entity.ghostly_ufo_descent.corpse.retrieved_items": "你已收回所有物品。",
   "entity.ghostly_ufo_descent.corpse.returned_to_body": "你已重返肉身！所有物品已恢复。",
   "entity.ghostly_ufo_descent.corpse.cannot_interact": "你不能与其他人的躯体交互",

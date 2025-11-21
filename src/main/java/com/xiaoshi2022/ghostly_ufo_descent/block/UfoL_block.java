@@ -4,12 +4,18 @@ import com.mojang.serialization.MapCodec;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -17,14 +23,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
-public class UfoL_block extends BaseEntityBlock implements EntityBlock {
+public class UfoL_block extends BaseEntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     private static final VoxelShape SHAPE = makeShape();
 
@@ -42,6 +53,75 @@ public class UfoL_block extends BaseEntityBlock implements EntityBlock {
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(UfoL_block::new);
+    }
+
+    @Override
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        // 只在服务器端处理
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        // 检查玩家是否处于灵魂状态
+        if (player instanceof ServerPlayer serverPlayer) {
+            Optional<Boolean> soulStateOpt = serverPlayer.getPersistentData().getBoolean("soul_state");
+            boolean soulState = soulStateOpt.orElse(false);
+
+            if (soulState) {
+                // 检查玩家是否在Dreamworld维度
+                boolean isInDreamWorld = serverPlayer.level().dimension().location().toString().equals("ghostly_ufo_descent:dream_world");
+
+                if (isInDreamWorld) {
+                    // 从玩家的持久化数据中获取传送回主世界的位置
+                    Optional<Double> xOpt = serverPlayer.getPersistentData().getDouble("sarcophagus_x");
+                    Optional<Double> yOpt = serverPlayer.getPersistentData().getDouble("sarcophagus_y");
+                    Optional<Double> zOpt = serverPlayer.getPersistentData().getDouble("sarcophagus_z");
+                    Optional<Float> yawOpt = serverPlayer.getPersistentData().getFloat("sarcophagus_yaw");
+                    Optional<Float> pitchOpt = serverPlayer.getPersistentData().getFloat("sarcophagus_pitch");
+
+                    // 检查所有必需的数据都存在
+                    if (xOpt.isPresent() && yOpt.isPresent() && zOpt.isPresent() &&
+                            yawOpt.isPresent() && pitchOpt.isPresent()) {
+
+                        // 获取主世界维度
+                        ResourceKey<Level> overworldKey = Level.OVERWORLD;
+                        ServerLevel overworld = serverPlayer.level().getServer().getLevel(overworldKey);
+
+                        if (overworld != null) {
+                            // 从 Optional 中获取实际值
+                            double x = xOpt.get();
+                            double y = yOpt.get();
+                            double z = zOpt.get();
+                            float yaw = yawOpt.get();
+                            float pitch = pitchOpt.get();
+
+                            // 传送玩家回主世界
+                            serverPlayer.teleportTo(overworld, x, y, z, java.util.Set.of(), yaw, pitch, false);
+
+                            // 重置玩家的灵魂状态
+                            serverPlayer.setInvisible(false); // 恢复可见
+                            serverPlayer.setInvulnerable(false); // 恢复可受伤
+                            serverPlayer.getPersistentData().putBoolean("soul_state", false);
+
+                            // 发送消息给玩家
+                            serverPlayer.sendSystemMessage(Component.translatable("block.ghostly_ufo_descent.ufo.returned_to_body"));
+
+                            return InteractionResult.SUCCESS;
+                        } else {
+                            serverPlayer.sendSystemMessage(Component.translatable("block.ghostly_ufo_descent.ufo.overworld_not_found"));
+                        }
+                    } else {
+                        serverPlayer.sendSystemMessage(Component.translatable("block.ghostly_ufo_descent.ufo.no_sarcophagus_data"));
+                    }
+                } else {
+                    serverPlayer.sendSystemMessage(Component.translatable("block.ghostly_ufo_descent.ufo.not_in_dreamworld"));
+                }
+            } else {
+                serverPlayer.sendSystemMessage(Component.translatable("block.ghostly_ufo_descent.ufo.not_soul_state"));
+            }
+        }
+
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -70,6 +150,8 @@ public class UfoL_block extends BaseEntityBlock implements EntityBlock {
     public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE; // 碰撞形状与视觉形状一致
     }
+    
+    // 移除不存在的方法
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
@@ -86,35 +168,27 @@ public class UfoL_block extends BaseEntityBlock implements EntityBlock {
         return world.getBlockState(pos.below()).isSolid();
     }
 
-    // 修复后的 VoxelShape - 修正所有超出范围的坐标
+    // 优化的 VoxelShape - 使方块更容易被点击到
     private static VoxelShape makeShape() {
         VoxelShape shape = Shapes.empty();
 
-        // 修正所有坐标到 0-1 范围内
-        shape = Shapes.join(shape, Shapes.box(0.375, 0.3125, 0.375, 0.625, 0.60625, 0.625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.35, 0, 1, 0.39375, 1), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.4375, 0.75, 0.4375, 0.5625, 0.875, 0.5625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.09375, 0.375, 0.0625, 0.921875, 0.5, 0.953125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.475, 0, 1, 0.51875, 1), BooleanOp.OR);
-
-        // 修正超出边界的坐标
-        shape = Shapes.join(shape, Shapes.box(0.984375, 0.4375, 0.46875, 1.0, 0.5625, 0.5625), BooleanOp.OR); // 修正 1.0625 -> 1.0
-        shape = Shapes.join(shape, Shapes.box(0.984375, 0.3125, 0.46875, 1.0, 0.4375, 0.5625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.984375, 0.1875, 0.46875, 1.0, 0.3125, 0.5625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0, 0.4375, 0.46875, 0.03125, 0.5625, 0.5625), BooleanOp.OR); // 修正 -0.046875 -> 0.0
-        shape = Shapes.join(shape, Shapes.box(0.0, 0.3125, 0.46875, 0.03125, 0.4375, 0.5625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0, 0.1875, 0.46875, 0.03125, 0.3125, 0.5625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.203125, 0.4375, 0.96875, 0.28125, 0.5625, 1.0), BooleanOp.OR); // 修正 1.0625 -> 1.0
-        shape = Shapes.join(shape, Shapes.box(0.203125, 0.3125, 0.96875, 0.28125, 0.4375, 1.0), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.203125, 0.1875, 0.96875, 0.28125, 0.3125, 1.0), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.703125, 0.4375, 0.0, 0.78125, 0.5625, 0.0), BooleanOp.OR); // 修正 -0.09375 -> 0.0
-        shape = Shapes.join(shape, Shapes.box(0.703125, 0.3125, 0.0, 0.78125, 0.4375, 0.0), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.703125, 0.1875, 0.0, 0.78125, 0.3125, 0.0), BooleanOp.OR);
-
-        shape = Shapes.join(shape, Shapes.box(0.1875, 0.5375, 0.665625, 0.8, 0.58125, 0.74375), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 0.5375, 0.265625, 0.8, 0.58125, 0.34375), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 0.5375, 0.353125, 0.3, 0.58125, 0.65625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.6875, 0.5375, 0.353125, 0.8, 0.58125, 0.65625), BooleanOp.OR);
+        // 基础主体 - 更大更明显的核心区域
+        shape = Shapes.join(shape, Shapes.box(0.25, 0.3, 0.25, 0.75, 0.7, 0.75), BooleanOp.OR);
+        
+        // 底部圆盘 - 覆盖更大区域便于点击
+        shape = Shapes.join(shape, Shapes.box(0.1, 0.35, 0.1, 0.9, 0.4, 0.9), BooleanOp.OR);
+        
+        // 顶部发光部分
+        shape = Shapes.join(shape, Shapes.box(0.4, 0.7, 0.4, 0.6, 0.9, 0.6), BooleanOp.OR);
+        
+        // 扩展的交互区域 - 增加侧面的碰撞箱
+        shape = Shapes.join(shape, Shapes.box(0.0, 0.4, 0.4, 0.2, 0.6, 0.6), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.8, 0.4, 0.4, 1.0, 0.6, 0.6), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.4, 0.4, 0.0, 0.6, 0.6, 0.2), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.4, 0.4, 0.8, 0.6, 0.6, 1.0), BooleanOp.OR);
+        
+        // 中部平台 - 增加更多交互点
+        shape = Shapes.join(shape, Shapes.box(0.15, 0.45, 0.15, 0.85, 0.55, 0.85), BooleanOp.OR);
 
         return shape.optimize(); // 优化形状
     }
