@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -97,10 +98,24 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
      * 初始化物品栏和存储结构
      */
     private void initializeInventories() {
-        mainInventory = new ArrayList<>();
-        armorInventory = new ArrayList<>();
-        offHandInventory = new ArrayList<>();
-        additionalItems = new ArrayList<>(); // 用于存储额外物品
+        // 主物品栏：36个槽位（0-35）
+        mainInventory = new ArrayList<>(36);
+        for (int i = 0; i < 36; i++) {
+            mainInventory.add(ItemStack.EMPTY);
+        }
+
+        // 盔甲栏：4个槽位（36-39）
+        armorInventory = new ArrayList<>(4);
+        for (int i = 0; i < 4; i++) {
+            armorInventory.add(ItemStack.EMPTY);
+        }
+
+        // 副手栏：1个槽位（40）
+        offHandInventory = new ArrayList<>(1);
+        offHandInventory.add(ItemStack.EMPTY);
+
+        // 额外物品
+        additionalItems = new ArrayList<>();
     }
 
     /**
@@ -111,49 +126,49 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
         EnumMap<EquipmentSlot, ItemStack> equipment = new EnumMap<>(EquipmentSlot.class);
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack stack = player.getItemBySlot(slot);
-            if (!stack.isEmpty()) {
-                equipment.put(slot, stack.copy());
-            }
+            equipment.put(slot, stack.copy());
         }
-        
+
         // 创建并初始化尸体实体
         CorpseEntity corpse = new CorpseEntity(player.level(), player.getUUID(), player.getName().getString(), equipment, (byte) 0);
 
-        // 复制玩家主物品栏
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack stack = player.getInventory().getItem(i);
+        // 复制玩家所有物品栏内容
+        Inventory playerInventory = player.getInventory();
+
+        // 1. 复制主物品栏和快捷栏（0-35槽位）
+        corpse.mainInventory.clear();
+        for (int i = 0; i < 36; i++) {
+            ItemStack stack = playerInventory.getItem(i);
+            corpse.mainInventory.add(stack.copy());
+        }
+
+        // 2. 复制盔甲栏（36-39槽位）
+        corpse.armorInventory.clear();
+        for (int i = 36; i < 40; i++) {
+            ItemStack stack = playerInventory.getItem(i);
+            corpse.armorInventory.add(stack.copy());
+        }
+
+        // 3. 复制副手栏（40槽位）
+        corpse.offHandInventory.clear();
+        ItemStack offhand = playerInventory.getItem(40);
+        corpse.offHandInventory.add(offhand.copy());
+
+        // 4. 复制其他额外物品（如果有）
+        corpse.additionalItems.clear();
+        for (int i = 41; i < playerInventory.getContainerSize(); i++) {
+            ItemStack stack = playerInventory.getItem(i);
             if (!stack.isEmpty()) {
-                // 根据物品栏类型分类存储
-                if (i >= 0 && i < 9) {
-                    // 快捷栏
-                    corpse.mainInventory.add(stack.copy());
-                } else if (i >= 9 && i < 36) {
-                    // 主物品栏
-                    corpse.mainInventory.add(stack.copy());
-                } else if (i >= 36 && i < 40) {
-                    // 盔甲栏（已经在上面的equipment中处理）
-                    continue;
-                } else if (i == 40) {
-                    // 副手（已经在上面的equipment中处理）
-                    continue;
-                } else {
-                    // 其他物品栏（如果有）
-                    corpse.additionalItems.add(stack.copy());
-                }
+                corpse.additionalItems.add(stack.copy());
             }
         }
 
-        // 设置位置和旋转（稍微调整位置，使其更自然）
+        // 设置位置和旋转
         corpse.setPos(player.getX(), player.getY() + 0.1, player.getZ());
         corpse.setYRot(player.getYRot());
         corpse.setXRot(player.getXRot());
-        corpse.setCorpseModel((byte) 0); // 默认模型，代表玩家
+        corpse.setCorpseModel((byte) 0);
         corpse.sleepPosition = player.position();
-        
-        // 从player api获取模型标志，确保躯体外观与玩家一致
-        if (player instanceof ServerPlayer serverPlayer) {
-            // 这里可以根据需要设置更多玩家特定的外观属性
-        }
 
         return corpse;
     }
@@ -251,21 +266,35 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
 
             // 只有玩家本人可以与自己的遗体交互
             if (serverPlayer.getUUID().equals(getPlayerUuid())) {
+                // 先检查玩家之前是否处于灵魂状态
+                boolean wasInSoulState = serverPlayer.getPersistentData().getBoolean("soul_state").orElse(false);
+                
                 // 无论是否处于灵魂状态，都将物品归还给玩家
                 returnItemsToPlayer(serverPlayer);
                 
-                // 如果玩家处于灵魂状态，恢复可见性
-                if (serverPlayer.getPersistentData().getBoolean("soul_state").orElse(false)) {
-                    serverPlayer.setInvisible(false);
-                    serverPlayer.getPersistentData().remove("soul_state");
+                // 修复：无论玩家是否处于灵魂状态，都恢复可见性和脆弱性
+                // 这样可以解决玩家从梦境死亡后无法恢复肉体的问题
+                serverPlayer.setInvisible(false);
+                serverPlayer.setInvulnerable(false);
+                serverPlayer.getPersistentData().putBoolean("soul_state", false);
+                
+                // 确保玩家状态被正确更新和持久化
+                serverPlayer.getPersistentData().remove("sarcophagus_x");
+                serverPlayer.getPersistentData().remove("sarcophagus_y");
+                serverPlayer.getPersistentData().remove("sarcophagus_z");
+                serverPlayer.getPersistentData().remove("sarcophagus_yaw");
+                serverPlayer.getPersistentData().remove("sarcophagus_pitch");
+                if (wasInSoulState) {
                     serverPlayer.sendSystemMessage(Component.translatable("entity.ghostly_ufo_descent.corpse.returned_to_body"));
                 } else {
-                    // 非灵魂状态的反馈
                     serverPlayer.sendSystemMessage(Component.translatable("entity.ghostly_ufo_descent.corpse.retrieved_items"));
                 }
-                
+
                 // 移除尸体实体
                 this.remove(RemovalReason.DISCARDED);
+                
+                // 强制标记玩家数据为脏，确保更改被保存
+                serverPlayer.onUpdateAbilities();
             } else {
                 // 其他玩家不能交互
                 serverPlayer.sendSystemMessage(Component.translatable("entity.ghostly_ufo_descent.corpse.cannot_interact"));
@@ -383,15 +412,23 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
     /**
      * 将物品归还给对应的玩家，包括所有装备和物品栏物品
      */
+    /**
+     * 将物品归还给对应的玩家，包括所有装备和物品栏物品
+     */
     public void returnItemsToPlayer(ServerPlayer player) {
-        // 首先归还装备
+        // 调试信息
+        GhostlyUFODescent.LOGGER.info("开始归还物品给玩家: {}", player.getName().getString());
+
+        Inventory playerInventory = player.getInventory();
+
+        // 1. 首先归还装备
         EnumMap<EquipmentSlot, ItemStack> equipment = getEquipment();
         if (equipment != null) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 if (equipment.containsKey(slot)) {
                     ItemStack stack = equipment.get(slot);
                     if (!stack.isEmpty()) {
-                        // 如果玩家当前槽位有物品，先将其放入背包
+                        // 如果玩家当前槽位有物品，先尝试放入背包
                         ItemStack currentItem = player.getItemBySlot(slot);
                         if (!currentItem.isEmpty()) {
                             if (!player.addItem(currentItem)) {
@@ -401,27 +438,117 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
                         }
                         // 设置装备到对应槽位
                         player.setItemSlot(slot, stack);
+                        GhostlyUFODescent.LOGGER.info("归还装备到槽位 {}: {}", slot.getName(), stack.getDisplayName().getString());
                     }
                 }
             }
         }
-        
-        // 归还主物品栏和额外物品栏的物品
-        List<ItemStack> itemsToReturn = new ArrayList<>();
-        itemsToReturn.addAll(mainInventory);
-        itemsToReturn.addAll(additionalItems);
-        
-        for (ItemStack item : itemsToReturn) {
-            if (!item.isEmpty()) {
-                if (!player.addItem(item)) {
-                    // 如果背包满了，掉落物品
-                    Containers.dropItemStack(level(), player.getX(), player.getY(), player.getZ(), item);
+
+        // 2. 归还主物品栏和快捷栏（0-35槽位）
+        if (mainInventory != null) {
+            for (int i = 0; i < Math.min(mainInventory.size(), 36); i++) {
+                ItemStack storedItem = mainInventory.get(i);
+                if (!storedItem.isEmpty()) {
+                    // 先尝试直接放入原位置
+                    if (i < playerInventory.getContainerSize()) {
+                        ItemStack currentItem = playerInventory.getItem(i);
+                        if (currentItem.isEmpty()) {
+                            // 原位置为空，直接放入
+                            playerInventory.setItem(i, storedItem);
+                        } else {
+                            // 原位置有物品，尝试合并或寻找其他空位
+                            boolean added = false;
+                            if (ItemStack.isSameItem(currentItem, storedItem) && currentItem.getCount() + storedItem.getCount() <= currentItem.getMaxStackSize()) {
+                                // 可以合并
+                                currentItem.grow(storedItem.getCount());
+                                playerInventory.setItem(i, currentItem);
+                                added = true;
+                            } else {
+                                // 寻找其他空位
+                                added = player.addItem(storedItem);
+                            }
+
+                            if (!added) {
+                                // 无法放入，掉落物品
+                                Containers.dropItemStack(level(), player.getX(), player.getY(), player.getZ(), storedItem);
+                            }
+                        }
+                    } else {
+                        // 位置超出范围，尝试添加到背包
+                        if (!player.addItem(storedItem)) {
+                            Containers.dropItemStack(level(), player.getX(), player.getY(), player.getZ(), storedItem);
+                        }
+                    }
                 }
             }
         }
 
-        // 清除物品栏
+        // 3. 归还盔甲栏（36-39槽位）- 这部分通常由装备处理覆盖，但这里作为备份
+        if (armorInventory != null) {
+            for (int i = 0; i < armorInventory.size(); i++) {
+                ItemStack armorItem = armorInventory.get(i);
+                if (!armorItem.isEmpty()) {
+                    EquipmentSlot slot = getArmorSlotForIndex(i);
+                    if (slot != null) {
+                        ItemStack currentArmor = player.getItemBySlot(slot);
+                        if (currentArmor.isEmpty()) {
+                            player.setItemSlot(slot, armorItem);
+                        } else {
+                            if (!player.addItem(armorItem)) {
+                                Containers.dropItemStack(level(), player.getX(), player.getY(), player.getZ(), armorItem);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 4. 归还副手物品
+        if (offHandInventory != null && !offHandInventory.isEmpty()) {
+            ItemStack offhandItem = offHandInventory.get(0);
+            if (!offhandItem.isEmpty()) {
+                ItemStack currentOffhand = player.getItemBySlot(EquipmentSlot.OFFHAND);
+                if (currentOffhand.isEmpty()) {
+                    player.setItemSlot(EquipmentSlot.OFFHAND, offhandItem);
+                } else {
+                    if (!player.addItem(offhandItem)) {
+                        Containers.dropItemStack(level(), player.getX(), player.getY(), player.getZ(), offhandItem);
+                    }
+                }
+            }
+        }
+
+        // 5. 归还额外物品
+        if (additionalItems != null) {
+            for (ItemStack extraItem : additionalItems) {
+                if (!extraItem.isEmpty()) {
+                    if (!player.addItem(extraItem)) {
+                        Containers.dropItemStack(level(), player.getX(), player.getY(), player.getZ(), extraItem);
+                    }
+                }
+            }
+        }
+
+        // 强制更新玩家物品栏
+        playerInventory.setChanged();
+        player.containerMenu.broadcastChanges();
+
+        // 发送归还完成消息
+        player.sendSystemMessage(Component.translatable("entity.ghostly_ufo_descent.corpse.all_items_returned"));
+
+        // 清除保存的物品
         initializeInventories();
+    }
+
+    // 辅助方法：根据索引获取对应的装备槽位
+    private EquipmentSlot getArmorSlotForIndex(int index) {
+        switch (index) {
+            case 0: return EquipmentSlot.HEAD;
+            case 1: return EquipmentSlot.CHEST;
+            case 2: return EquipmentSlot.LEGS;
+            case 3: return EquipmentSlot.FEET;
+            default: return null;
+        }
     }
 
     @Override
@@ -431,7 +558,7 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
         setCorpseName(valueInput.getStringOr("CorpseName", ""));
         setIsSkeleton(valueInput.getBooleanOr("IsSkeleton", false));
         setCorpseModel(valueInput.getByteOr("CorpseModel", (byte) 0));
-        
+
         // 读取装备
         Optional<CompoundTag> optionalEquipmentTag = ValueInputOutputUtils.getTag(valueInput, "Equipment");
         if (optionalEquipmentTag.isPresent()) {
@@ -440,27 +567,29 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 String slotName = slot.getName();
                 if (equipmentTag.contains(slotName)) {
-                        Optional<CompoundTag> slotTagOptional = equipmentTag.getCompound(slotName);
-                        if (slotTagOptional.isPresent()) {
-                            CompoundTag slotTag = slotTagOptional.get();
-                            try {
-                                ItemStack itemStack = CodecUtils.fromNBT(ItemStack.CODEC, slotTag).orElse(ItemStack.EMPTY);
-                                if (!itemStack.isEmpty()) {
-                                    equipment.put(slot, itemStack);
-                                }
-                            } catch (Exception e) {
-                                // 忽略无法读取的物品
+                    Optional<CompoundTag> slotTagOptional = equipmentTag.getCompound(slotName);
+                    if (slotTagOptional.isPresent()) {
+                        CompoundTag slotTag = slotTagOptional.get();
+                        try {
+                            ItemStack itemStack = CodecUtils.fromNBT(ItemStack.CODEC, slotTag).orElse(ItemStack.EMPTY);
+                            if (!itemStack.isEmpty()) {
+                                equipment.put(slot, itemStack);
                             }
+                        } catch (Exception e) {
+                            // 忽略无法读取的物品
                         }
                     }
+                }
             }
             setEquipment(equipment);
         }
-        
+
+        // 读取物品栏数据
+        readInventoryFromNBT(valueInput);
+
         age = valueInput.getIntOr("Age", 0);
         emptyAge = valueInput.getIntOr("EmptyAge", -1);
     }
-
 
     @Override
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
@@ -469,7 +598,7 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
         valueOutput.putString("CorpseName", getCorpseName());
         valueOutput.putBoolean("IsSkeleton", isSkeleton());
         valueOutput.putByte("CorpseModel", getCorpseModel());
-        
+
         // 保存装备
         CompoundTag equipmentTag = new CompoundTag();
         EnumMap<EquipmentSlot, ItemStack> equipment = getEquipment();
@@ -482,9 +611,153 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
         }
         ValueInputOutputUtils.setTag(valueOutput, "Equipment", equipmentTag);
 
+        // 保存物品栏数据
+        saveInventoryToNBT(valueOutput);
+
         valueOutput.putInt("Age", age);
         if (emptyAge >= 0) {
             valueOutput.putInt("EmptyAge", emptyAge);
         }
+    }
+
+    /**
+     * 从NBT读取物品栏数据
+     */
+    private void readInventoryFromNBT(ValueInput valueInput) {
+        initializeInventories();
+
+        // 读取主物品栏
+        Optional<CompoundTag> mainInvTag = ValueInputOutputUtils.getTag(valueInput, "MainInventory");
+        if (mainInvTag.isPresent()) {
+            CompoundTag tag = mainInvTag.get();
+            for (int i = 0; i < 36; i++) {
+                String key = "Slot" + i;
+                if (tag.contains(key)) {
+                    Optional<CompoundTag> itemTag = tag.getCompound(key);
+                    if (itemTag.isPresent()) {
+                        ItemStack stack = CodecUtils.fromNBT(ItemStack.CODEC, itemTag.get()).orElse(ItemStack.EMPTY);
+                        if (i < mainInventory.size()) {
+                            mainInventory.set(i, stack);
+                        } else {
+                            mainInventory.add(stack);
+                        }
+                    }
+                }
+            }
+        }
+
+        // 读取盔甲栏
+        Optional<CompoundTag> armorInvTag = ValueInputOutputUtils.getTag(valueInput, "ArmorInventory");
+        if (armorInvTag.isPresent()) {
+            CompoundTag tag = armorInvTag.get();
+            for (int i = 0; i < 4; i++) {
+                String key = "Slot" + i;
+                if (tag.contains(key)) {
+                    Optional<CompoundTag> itemTag = tag.getCompound(key);
+                    if (itemTag.isPresent()) {
+                        ItemStack stack = CodecUtils.fromNBT(ItemStack.CODEC, itemTag.get()).orElse(ItemStack.EMPTY);
+                        if (i < armorInventory.size()) {
+                            armorInventory.set(i, stack);
+                        } else {
+                            armorInventory.add(stack);
+                        }
+                    }
+                }
+            }
+        }
+
+        // 读取副手栏
+        Optional<CompoundTag> offhandTag = ValueInputOutputUtils.getTag(valueInput, "OffhandInventory");
+        if (offhandTag.isPresent()) {
+            CompoundTag tag = offhandTag.get();
+            if (tag.contains("Slot0")) {
+                Optional<CompoundTag> itemTag = tag.getCompound("Slot0");
+                if (itemTag.isPresent()) {
+                    ItemStack stack = CodecUtils.fromNBT(ItemStack.CODEC, itemTag.get()).orElse(ItemStack.EMPTY);
+                    if (!offHandInventory.isEmpty()) {
+                        offHandInventory.set(0, stack);
+                    } else {
+                        offHandInventory.add(stack);
+                    }
+                }
+            }
+        }
+
+        // 读取额外物品
+        Optional<CompoundTag> additionalTag = ValueInputOutputUtils.getTag(valueInput, "AdditionalItems");
+        if (additionalTag.isPresent()) {
+            CompoundTag tag = additionalTag.get();
+            int index = 0;
+            while (tag.contains("Item" + index)) {
+                Optional<CompoundTag> itemTag = tag.getCompound("Item" + index);
+                if (itemTag.isPresent()) {
+                    ItemStack stack = CodecUtils.fromNBT(ItemStack.CODEC, itemTag.get()).orElse(ItemStack.EMPTY);
+                    if (index < additionalItems.size()) {
+                        additionalItems.set(index, stack);
+                    } else {
+                        additionalItems.add(stack);
+                    }
+                }
+                index++;
+            }
+        }
+    }
+
+    /**
+     * 保存物品栏数据到NBT
+     */
+    private void saveInventoryToNBT(ValueOutput valueOutput) {
+        // 保存主物品栏
+        CompoundTag mainInvTag = new CompoundTag();
+        for (int i = 0; i < mainInventory.size(); i++) {
+            ItemStack stack = mainInventory.get(i);
+            if (!stack.isEmpty()) {
+                CompoundTag itemTag = CodecUtils.toNBT(ItemStack.CODEC, stack)
+                        .filter(CompoundTag.class::isInstance)
+                        .map(CompoundTag.class::cast)
+                        .orElseGet(CompoundTag::new);
+                mainInvTag.put("Slot" + i, itemTag);
+            }
+        }
+        ValueInputOutputUtils.setTag(valueOutput, "MainInventory", mainInvTag);
+
+        // 保存盔甲栏
+        CompoundTag armorInvTag = new CompoundTag();
+        for (int i = 0; i < armorInventory.size(); i++) {
+            ItemStack stack = armorInventory.get(i);
+            if (!stack.isEmpty()) {
+                CompoundTag itemTag = CodecUtils.toNBT(ItemStack.CODEC, stack)
+                        .filter(CompoundTag.class::isInstance)
+                        .map(CompoundTag.class::cast)
+                        .orElseGet(CompoundTag::new);
+                armorInvTag.put("Slot" + i, itemTag);
+            }
+        }
+        ValueInputOutputUtils.setTag(valueOutput, "ArmorInventory", armorInvTag);
+
+        // 保存副手栏
+        CompoundTag offhandTag = new CompoundTag();
+        if (!offHandInventory.isEmpty() && !offHandInventory.get(0).isEmpty()) {
+            CompoundTag itemTag = CodecUtils.toNBT(ItemStack.CODEC, offHandInventory.get(0))
+                    .filter(CompoundTag.class::isInstance)
+                    .map(CompoundTag.class::cast)
+                    .orElseGet(CompoundTag::new);
+            offhandTag.put("Slot0", itemTag);
+        }
+        ValueInputOutputUtils.setTag(valueOutput, "OffhandInventory", offhandTag);
+
+        // 保存额外物品
+        CompoundTag additionalTag = new CompoundTag();
+        for (int i = 0; i < additionalItems.size(); i++) {
+            ItemStack stack = additionalItems.get(i);
+            if (!stack.isEmpty()) {
+                CompoundTag itemTag = CodecUtils.toNBT(ItemStack.CODEC, stack)
+                        .filter(CompoundTag.class::isInstance)
+                        .map(CompoundTag.class::cast)
+                        .orElseGet(CompoundTag::new);
+                additionalTag.put("Item" + i, itemTag);
+            }
+        }
+        ValueInputOutputUtils.setTag(valueOutput, "AdditionalItems", additionalTag);
     }
 }
