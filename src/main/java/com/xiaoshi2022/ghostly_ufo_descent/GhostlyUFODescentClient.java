@@ -4,6 +4,7 @@ import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.GhostlySarcopha
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.UfoL_blockentityRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.SporeStarPersonRenerer;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
+import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry;
 import net.minecraft.client.Minecraft;
@@ -36,7 +37,8 @@ public class GhostlyUFODescentClient {
 
         // 注册实体渲染器
         EntityRenderers.register(EntityRegistry.SPORE_STAR_PERSON.get(), SporeStarPersonRenerer::new);
-
+        // 添加CorpseEntity渲染器注册
+        EntityRenderers.register(EntityRegistry.CORPSE_ENTITY.get(), CorpseRenderer::new);
 
         // Some client setup code
         GhostlyUFODescent.LOGGER.info("HELLO FROM CLIENT SETUP");

@@ -1,11 +1,20 @@
 package com.xiaoshi2022.ghostly_ufo_descent;
 
 import com.mojang.logging.LogUtils;
+import com.xiaoshi2022.ghostly_ufo_descent.api.dataserializers.DataSerializerEquipment;
+import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseEntity;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
@@ -19,6 +28,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.slf4j.Logger;
 
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry.BLOCK_ENTITIES;
@@ -26,6 +36,11 @@ import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockRegistry.BLOCKS;
 
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry.ENTITY_TYPES;
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.ItemRegistry.*;
+import com.xiaoshi2022.ghostly_ufo_descent.event.SarcophagusEvents;
+import org.slf4j.LoggerFactory;
+
+import java.util.EnumMap;
+import java.util.UUID;
 
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
@@ -35,6 +50,11 @@ public class GhostlyUFODescent {
     public static final String MODID = "ghostly_ufo_descent";
     // 直接引用 slf4j 记录器
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final org.slf4j.Logger INSTANCE = LoggerFactory.getLogger("ghostly_ufo_descent");
+
+    private static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZER_REGISTER = DeferredRegister.create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, GhostlyUFODescent.MODID);
+    public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<EnumMap<EquipmentSlot, ItemStack>>> EQUIPMENT_SERIALIZER = DATA_SERIALIZER_REGISTER.register("equipment", DataSerializerEquipment::create);
+    public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<UUID>> UUID_SERIALIZER = DATA_SERIALIZER_REGISTER.register("uuid", () -> EntityDataSerializer.forValueType(UUIDUtil.STREAM_CODEC));
 
 
     // 创建一个延迟寄存器来保存 CreativeModeTabs，这些 CreativeModeTabs 都将在“ghostly_ufo_descent”命名空间下注册
@@ -61,6 +81,7 @@ public class GhostlyUFODescent {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
+        DATA_SERIALIZER_REGISTER.register(modEventBus);
 
         BLOCK_ENTITIES.register(modEventBus);
         ENTITY_TYPES.register(modEventBus);
@@ -87,6 +108,9 @@ public class GhostlyUFODescent {
 
         Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
         
+        // 注册石棺事件监听器
+        NeoForge.EVENT_BUS.register(new SarcophagusEvents());
+        
 //        // 初始化维度注册
 //        com.xiaoshi2022.ghostly_ufo_descent.registry.DimensionRegistry.init();
     }
@@ -105,4 +129,5 @@ public class GhostlyUFODescent {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
+
 }

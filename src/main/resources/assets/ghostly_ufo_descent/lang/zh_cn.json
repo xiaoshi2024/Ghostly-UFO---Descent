@@ -19,6 +19,11 @@
   "ghostly_ufo_descent.configuration.magicNumber": "Magic Number",
 
   "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "你只能在晚上使用异星石棺。",
-  "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "附近有怪物, 这使得你无法平静地入眠。"
+  "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "附近有怪物, 这使得你无法平静地入眠。",
+  "entity.ghostly_ufo_descent.corpse.retrieved_items": "你已收回所有物品。",
+  "entity.ghostly_ufo_descent.corpse.returned_to_body": "你已重返肉身！所有物品已恢复。",
+  "entity.ghostly_ufo_descent.corpse.cannot_interact": "你不能与其他人的躯体交互",
+  "entity.ghostly_ufo_descent.corpse.display_name_empty": "石棺中的休眠者",
+  "entity.ghostly_ufo_descent.corpse.display_name_suffix": " (石棺休眠中)"
 
 }

@@ -17,6 +17,11 @@
   "ghostly_ufo_descent.configuration.logDirtBlock": "Log Dirt Block",
   "ghostly_ufo_descent.configuration.magicNumberIntroduction": "Magic Number Text",
   "ghostly_ufo_descent.configuration.magicNumber": "Magic Number",
-  "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "You can only use the Ghost Stone Coffin at night.",
-  "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "There are monsters roaming nearby, making it impossible to sleep peacefully."
+  "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "You can only use the alien sarcophagus at night.",
+  "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "There are monsters nearby, which prevents you from sleeping peacefully.",
+  "entity.ghostly_ufo_descent.corpse.retrieved_items": "You have retrieved all items.",
+  "entity.ghostly_ufo_descent.corpse.returned_to_body": "You have returned to your body! All items restored.",
+  "entity.ghostly_ufo_descent.corpse.cannot_interact": "You cannot interact with other people's bodies",
+  "entity.ghostly_ufo_descent.corpse.display_name_empty": "Sleeper in Sarcophagus",
+  "entity.ghostly_ufo_descent.corpse.display_name_suffix": " (Sarcophagus Sleep)"
 }
