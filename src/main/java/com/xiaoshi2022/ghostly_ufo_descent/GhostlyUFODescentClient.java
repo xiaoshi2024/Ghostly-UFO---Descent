@@ -1,6 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent;
 
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.GhostlySarcophagusRenderer;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.PhagenaCropRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.UfoL_blockentityRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.SporeStarPersonRenerer;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
@@ -57,5 +58,7 @@ public class GhostlyUFODescentClient {
                 GhostlySarcophagusRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.UFO_L_BLOCK_ENTITY.get(),
                 UfoL_blockentityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityRegistry.PHAGENA_CROP.get(),
+                PhagenaCropRenderer::new);
     }
 }

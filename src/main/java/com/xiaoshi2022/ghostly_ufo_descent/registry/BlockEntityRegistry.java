@@ -1,6 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
 import com.xiaoshi2022.ghostly_ufo_descent.block.entity.GhostlySarcophagus;
+import com.xiaoshi2022.ghostly_ufo_descent.block.entity.PhagenaCropBlockEntity;
 import com.xiaoshi2022.ghostly_ufo_descent.block.entity.UfoL_blockentity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,6 +23,10 @@ public final class BlockEntityRegistry {
 	public static final Supplier<BlockEntityType<UfoL_blockentity>> UFO_L_BLOCK_ENTITY = BLOCK_ENTITIES.register("ufo_l",
 			() -> new BlockEntityType<>(UfoL_blockentity::new, Set.of(BlockRegistry.UFO_L_BLOCK.get())));
 
+	//动画作物
+	public static final Supplier<BlockEntityType<PhagenaCropBlockEntity>> PHAGENA_CROP =
+			BLOCK_ENTITIES.register("phagena_crop",
+					() -> new BlockEntityType<>(PhagenaCropBlockEntity::new,Set.of(BlockRegistry.PHAGENABOTANYS.get())));
 
 	public static void init() {}
 }

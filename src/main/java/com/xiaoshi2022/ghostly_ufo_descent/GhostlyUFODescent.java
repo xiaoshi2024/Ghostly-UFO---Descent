@@ -3,6 +3,7 @@ package com.xiaoshi2022.ghostly_ufo_descent;
 import com.mojang.logging.LogUtils;
 import com.xiaoshi2022.ghostly_ufo_descent.api.dataserializers.DataSerializerEquipment;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseEntity;
+import com.xiaoshi2022.ghostly_ufo_descent.event.PhagenaHarvestHandler;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -113,6 +114,9 @@ public class GhostlyUFODescent {
         
         // 注册梦镜维度安全传送处理器
         NeoForge.EVENT_BUS.register(DreamworldSafeSpawnHandler.class);
+        // 注册极噬种子收获事件处理器
+        NeoForge.EVENT_BUS.register(PhagenaHarvestHandler.class);
+
     }
 
     //将示例块项添加到构建块选项卡

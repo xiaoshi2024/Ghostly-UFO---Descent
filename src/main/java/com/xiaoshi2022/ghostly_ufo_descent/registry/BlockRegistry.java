@@ -2,7 +2,12 @@ package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
 import com.xiaoshi2022.ghostly_ufo_descent.block.GhostlySarcophagus_block;
 import com.xiaoshi2022.ghostly_ufo_descent.block.UfoL_block;
+import com.xiaoshi2022.ghostly_ufo_descent.block.custom.Phagenabotanys;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -31,4 +36,9 @@ public final class BlockRegistry {
                             .strength(50.0F, 1200.0F) // 高硬度
                             .requiresCorrectToolForDrops() // 需要正确的工具才能掉落
             ));
+
+    //作物
+    public static final DeferredBlock<Block> PHAGENABOTANYS = BLOCKS.registerBlock("phagena_crop",
+            (properties) -> new Phagenabotanys(properties.mapColor(MapColor.PLANT).strength(0.2F)
+                    .randomTicks().sound(SoundType.CROP).noOcclusion().pushReaction(PushReaction.DESTROY)));
 }
