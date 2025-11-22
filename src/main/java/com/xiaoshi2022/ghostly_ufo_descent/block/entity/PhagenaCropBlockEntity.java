@@ -19,8 +19,7 @@ public class PhagenaCropBlockEntity extends BlockEntity implements GeoBlockEntit
         super(BlockEntityRegistry.PHAGENA_CROP.get(), pos, state);
     }
 
-    // 定义数据票据
-    // 正确的创建方式
+    // 定义数据票据[用于实现动画数据]
     public static final DataTicket<Integer> CROP_AGE = DataTicket.create("crop_age", Integer.class);
     public static final DataTicket<Long> DAY_TIME = DataTicket.create("day_time", Long.class);
 
