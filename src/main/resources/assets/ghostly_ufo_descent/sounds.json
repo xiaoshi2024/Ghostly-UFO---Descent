@@ -1,0 +1,11 @@
+{
+  "ufo_p": {
+    "subtitle": "subtitles.ufo_p",
+    "sounds": [
+      {
+        "name": "ghostly_ufo_descent:ufo_p",
+        "stream": false
+      }
+    ]
+  }
+}

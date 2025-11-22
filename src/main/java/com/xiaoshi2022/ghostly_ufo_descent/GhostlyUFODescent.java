@@ -37,6 +37,7 @@ import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry.B
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockRegistry.BLOCKS;
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry.ENTITY_TYPES;
 import static com.xiaoshi2022.ghostly_ufo_descent.registry.ItemRegistry.*;
+import static com.xiaoshi2022.ghostly_ufo_descent.registry.SoundRegistry.SOUND_EVENT;
 
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
@@ -78,6 +79,7 @@ public class GhostlyUFODescent {
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
         DATA_SERIALIZER_REGISTER.register(modEventBus);
+        SOUND_EVENT.register(modEventBus);
 
         BLOCK_ENTITIES.register(modEventBus);
         ENTITY_TYPES.register(modEventBus);

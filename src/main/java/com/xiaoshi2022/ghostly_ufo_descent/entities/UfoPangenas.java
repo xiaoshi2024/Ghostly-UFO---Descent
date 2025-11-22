@@ -24,6 +24,7 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+import com.xiaoshi2022.ghostly_ufo_descent.registry.SoundRegistry;
 
 /**
  * 极噬者UFO实体类
@@ -50,6 +51,12 @@ public class UfoPangenas extends PathfinderMob implements GeoEntity {
 
     // 调试标志
     private static final boolean DEBUG_UFO = false;
+    
+    // 音效相关计时器
+    private int soundCooldown = 0;
+    // 音效音量控制
+    private static final float BASE_VOLUME = 0.5F;
+    private static final float MAX_VOLUME = 0.8F;
 
     /**
      * 标准构造函数
@@ -99,6 +106,25 @@ public class UfoPangenas extends PathfinderMob implements GeoEntity {
             attackLockTicks--;
             if (attackLockTicks <= 0) {
                 isAttacking = false;
+            }
+        }
+        
+        // 处理音效冷却
+        if (soundCooldown > 0) {
+            soundCooldown--;
+        }
+        
+        // 客户端音效处理
+        if (this.level().isClientSide()) {
+            // 播放飞行/移动音效
+            if (!isAttacking && this.getDeltaMovement().horizontalDistanceSqr() > 0.001D && soundCooldown <= 0) {
+                // 根据移动速度调整音效冷却时间
+                double speed = this.getDeltaMovement().horizontalDistance();
+                int cooldown = (int)(20 - (speed * 15)); // 速度越快，冷却越短
+                cooldown = Math.max(10, cooldown); // 最小冷却时间
+                
+                this.playUfoSound(speed);
+                soundCooldown = cooldown;
             }
         }
 
@@ -154,6 +180,13 @@ public class UfoPangenas extends PathfinderMob implements GeoEntity {
         super.die(source);
         isDead = true;
         dbg("Boss has been defeated!");
+        
+        // 播放死亡音效
+        if (this.level().isClientSide()) {
+            // 死亡音效使用最大音量和较低音调
+            this.playSound(SoundRegistry.UFO_P.get(), 1.0F, 0.7F + (this.random.nextFloat() * 0.1F));
+        }
+        
         // 可以在这里添加死亡掉落或特殊事件的逻辑
     }
 
@@ -213,6 +246,11 @@ public class UfoPangenas extends PathfinderMob implements GeoEntity {
 
         // 设置 swinging 状态以同步到客户端
         this.swinging = true;
+        
+        // 播放攻击音效
+        if (this.level().isClientSide()) {
+            this.playAttackSound();
+        }
     }
 
     /**
@@ -257,6 +295,34 @@ public class UfoPangenas extends PathfinderMob implements GeoEntity {
         this.isDead = in.getBooleanOr("IsDead", false);
         dbg("load: IsAttacking={}, AttackLockTicks={}, IsDead={}",
                 this.isAttacking, this.attackLockTicks, this.isDead);
+    }
+    
+    /**
+     * 播放UFO飞行音效
+     */
+    private void playUfoSound(double speed) {
+        // 根据速度调整音量和音调
+        float volume = BASE_VOLUME + (float)speed * 0.3F;
+        volume = Math.min(MAX_VOLUME, volume); // 限制最大音量
+        
+        // 随机调整音调，避免音效重复感
+        float pitch = 0.9F + (this.random.nextFloat() * 0.2F);
+        
+        // 添加距离衰减效果 - 这里使用标准的playSound方法，它已经内置了距离衰减
+        this.playSound(SoundRegistry.UFO_P.get(), volume, pitch);
+        dbg("Playing UFO sound at speed {}, volume {}, pitch {}", speed, volume, pitch);
+    }
+    
+    /**
+     * 播放攻击音效
+     */
+    public void playAttackSound() {
+        // 攻击音效使用更高的音量和变化的音调
+        float volume = 0.8F + (this.random.nextFloat() * 0.2F);
+        float pitch = 1.1F + (this.random.nextFloat() * 0.3F);
+        
+        this.playSound(SoundRegistry.UFO_P.get(), volume, pitch);
+        dbg("Playing attack sound with volume {}, pitch {}", volume, pitch);
     }
 
     /**

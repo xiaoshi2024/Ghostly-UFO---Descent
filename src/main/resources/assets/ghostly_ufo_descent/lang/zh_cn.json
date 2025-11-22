@@ -38,6 +38,8 @@
   "entity.ghostly_ufo_descent.corpse.cannot_interact": "你不能与其他人的躯体交互",
   "entity.ghostly_ufo_descent.corpse.display_name_empty": "石棺中的休眠者",
   "entity.ghostly_ufo_descent.corpse.display_name_suffix": " (石棺休眠中)",
-  "entity.ghostly_ufo_descent.corpse.all_items_returned": "所有物品已返回"
+  "entity.ghostly_ufo_descent.corpse.all_items_returned": "所有物品已返回",
+
+  "subtitles.ufo_p":"UFO 语言"
 
 }

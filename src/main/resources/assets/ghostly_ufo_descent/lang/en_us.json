@@ -37,5 +37,7 @@
   "entity.ghostly_ufo_descent.corpse.cannot_interact": "You cannot interact with other people's bodies",
   "entity.ghostly_ufo_descent.corpse.display_name_empty": "Sleeper in Sarcophagus",
   "entity.ghostly_ufo_descent.corpse.display_name_suffix": " (Sarcophagus Sleep)",
-  "entity.ghostly_ufo_descent.corpse.all_items_returned": "All Items"
+  "entity.ghostly_ufo_descent.corpse.all_items_returned": "All Items",
+  
+  "subtitles.ufo_p":"UFO Lang"
 }
