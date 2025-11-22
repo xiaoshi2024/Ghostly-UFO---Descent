@@ -1,14 +1,13 @@
 package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
-import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
+import com.xiaoshi2022.ghostly_ufo_descent.entities.UfoPangenas;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -35,5 +34,15 @@ public final class EntityRegistry {
 					.clientTrackingRange(8)
 					.build(ResourceKey.create(Registries.ENTITY_TYPE,
 							ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "corpse_entity"))));
+
+	// 注册极噬者UFO实体
+	public static final Supplier<EntityType<UfoPangenas>> UFO_PANGENAS = ENTITY_TYPES.register("ufo_pangenas",
+			() -> EntityType.Builder.of(UfoPangenas::new, MobCategory.MONSTER)
+					.sized(0.6f, 2.1f)  // 大型Boss尺寸
+					.eyeHeight(2.0f)
+					.clientTrackingRange(16)  // 增加跟踪范围以确保远距离可见
+					.build(ResourceKey.create(Registries.ENTITY_TYPE,
+							ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "ufo_pangenas"))));
+
 
 }

@@ -4,7 +4,9 @@ import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.GhostlySarcopha
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.PhagenaCropRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.UfoL_blockentityRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.SporeStarPersonRenerer;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.UfoPangenasRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
+import com.xiaoshi2022.ghostly_ufo_descent.entities.UfoPangenas;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry;
@@ -40,6 +42,8 @@ public class GhostlyUFODescentClient {
         EntityRenderers.register(EntityRegistry.SPORE_STAR_PERSON.get(), SporeStarPersonRenerer::new);
         // 添加CorpseEntity渲染器注册
         EntityRenderers.register(EntityRegistry.CORPSE_ENTITY.get(), CorpseRenderer::new);
+        // 注册极噬者UFO渲染器
+        EntityRenderers.register(EntityRegistry.UFO_PANGENAS.get(), UfoPangenasRenderer::new);
 
         // Some client setup code
         GhostlyUFODescent.LOGGER.info("HELLO FROM CLIENT SETUP");
@@ -50,6 +54,8 @@ public class GhostlyUFODescentClient {
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         // 注册孢子星人的属性
         event.put(EntityRegistry.SPORE_STAR_PERSON.get(), SporeStarPerson.createAttributes());
+        // 注册极噬者UFO的属性
+        event.put(EntityRegistry.UFO_PANGENAS.get(), UfoPangenas.createAttributes());
     }
 
     @SubscribeEvent

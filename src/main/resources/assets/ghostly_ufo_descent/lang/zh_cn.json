@@ -5,6 +5,8 @@
   "block.ghostly_ufo_descent.ufo_l": "飞碟灯",
 
   "entity.ghostly_ufo_descent.spore_star_person": "孢子星人",
+  "entity.ghostly_ufo_descent.ufo_pangenas": "极噬者UFO",
+  "entity.ghostly_ufo_descent.corpse_entity": "你的躯体",
 
   "item.ghostly_ufo_descent.phagan_seeds": "极噬种子",
   "item.ghostly_ufo_descent.ghostly_scroll": "鬼怪卷轴",
@@ -35,6 +37,7 @@
   "entity.ghostly_ufo_descent.corpse.returned_to_body": "你已重返肉身！所有物品已恢复。",
   "entity.ghostly_ufo_descent.corpse.cannot_interact": "你不能与其他人的躯体交互",
   "entity.ghostly_ufo_descent.corpse.display_name_empty": "石棺中的休眠者",
-  "entity.ghostly_ufo_descent.corpse.display_name_suffix": " (石棺休眠中)"
+  "entity.ghostly_ufo_descent.corpse.display_name_suffix": " (石棺休眠中)",
+  "entity.ghostly_ufo_descent.corpse.all_items_returned": "所有物品已返回"
 
 }

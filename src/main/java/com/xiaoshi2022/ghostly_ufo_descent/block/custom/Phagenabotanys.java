@@ -1,7 +1,6 @@
 package com.xiaoshi2022.ghostly_ufo_descent.block.custom;
 
 import com.xiaoshi2022.ghostly_ufo_descent.block.entity.PhagenaCropBlockEntity;
-import com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;

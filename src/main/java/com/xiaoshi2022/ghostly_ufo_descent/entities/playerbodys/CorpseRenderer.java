@@ -3,7 +3,6 @@ package com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
 import com.xiaoshi2022.ghostly_ufo_descent.api.codec.CachedMap;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
+
 import java.util.UUID;
 
 public class CorpseRenderer extends EntityRenderer<CorpseEntity, CorpseRenderState> {

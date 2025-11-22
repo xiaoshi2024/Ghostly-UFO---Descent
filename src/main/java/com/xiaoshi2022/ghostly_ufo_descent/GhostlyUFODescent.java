@@ -2,17 +2,14 @@ package com.xiaoshi2022.ghostly_ufo_descent;
 
 import com.mojang.logging.LogUtils;
 import com.xiaoshi2022.ghostly_ufo_descent.api.dataserializers.DataSerializerEquipment;
-import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseEntity;
 import com.xiaoshi2022.ghostly_ufo_descent.event.PhagenaHarvestHandler;
+import com.xiaoshi2022.ghostly_ufo_descent.world.dimension.DreamworldSafeSpawnHandler;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -31,17 +28,15 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.slf4j.Logger;
-import com.xiaoshi2022.ghostly_ufo_descent.world.dimension.DreamworldSafeSpawnHandler;
-
-import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry.BLOCK_ENTITIES;
-import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockRegistry.BLOCKS;
-
-import static com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry.ENTITY_TYPES;
-import static com.xiaoshi2022.ghostly_ufo_descent.registry.ItemRegistry.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.EnumMap;
 import java.util.UUID;
+
+import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry.BLOCK_ENTITIES;
+import static com.xiaoshi2022.ghostly_ufo_descent.registry.BlockRegistry.BLOCKS;
+import static com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry.ENTITY_TYPES;
+import static com.xiaoshi2022.ghostly_ufo_descent.registry.ItemRegistry.*;
 
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file

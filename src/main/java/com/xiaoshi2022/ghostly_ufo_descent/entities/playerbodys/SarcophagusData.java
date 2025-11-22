@@ -3,14 +3,12 @@ package com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
-import net.minecraft.world.item.Items;
 
 /**
  * 管理玩家在石棺休眠时的数据类
