@@ -3,6 +3,7 @@ package com.xiaoshi2022.ghostly_ufo_descent;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.GhostlySarcophagusRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.PhagenaCropRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.UfoL_blockentityRenderer;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.EntityMeteorRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.SporeStarPersonRenerer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.UfoPangenasRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
@@ -44,6 +45,8 @@ public class GhostlyUFODescentClient {
         EntityRenderers.register(EntityRegistry.CORPSE_ENTITY.get(), CorpseRenderer::new);
         // 注册极噬者UFO渲染器
         EntityRenderers.register(EntityRegistry.UFO_PANGENAS.get(), UfoPangenasRenderer::new);
+
+        EntityRenderers.register(EntityRegistry.METEOR.get(), EntityMeteorRenderer::new);
 
         // Some client setup code
         GhostlyUFODescent.LOGGER.info("HELLO FROM CLIENT SETUP");

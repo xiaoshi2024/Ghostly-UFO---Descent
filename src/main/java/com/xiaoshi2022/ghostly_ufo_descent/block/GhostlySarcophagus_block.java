@@ -41,7 +41,10 @@ public class GhostlySarcophagus_block extends BaseEntityBlock {
 
     public GhostlySarcophagus_block(BlockBehaviour.Properties properties) {
         super(properties
-                .strength(3.0F, 8.0F)  // 添加合适的硬度和抗性
+                .strength(50.0F, 1200.0F)  // 黑曜石级别的硬度和爆炸抗性
+                .requiresCorrectToolForDrops()  // 需要正确的工具才能获取掉落物（类似黑曜石）
+                .isValidSpawn((state, world, pos, entityType) -> false)  // 阻止生物生成
+                .isRedstoneConductor((state, world, pos) -> false)  // 非红石导体
         );
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }

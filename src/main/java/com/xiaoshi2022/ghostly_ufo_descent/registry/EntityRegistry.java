@@ -3,6 +3,7 @@ package com.xiaoshi2022.ghostly_ufo_descent.registry;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.UfoPangenas;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseEntity;
+import com.xiaoshi2022.ghostly_ufo_descent.meteor.entity.EntityMeteor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -43,6 +44,14 @@ public final class EntityRegistry {
 					.clientTrackingRange(16)  // 增加跟踪范围以确保远距离可见
 					.build(ResourceKey.create(Registries.ENTITY_TYPE,
 							ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "ufo_pangenas"))));
-
+	
+	// 注册陨石实体
+	public static final Supplier<EntityType<EntityMeteor>> METEOR = ENTITY_TYPES.register("meteor",
+			() -> EntityType.Builder.<EntityMeteor>of(EntityMeteor::new, MobCategory.MISC)
+					.sized(1.0f, 1.0f)
+					.eyeHeight(0.5f)
+					.clientTrackingRange(8)
+					.build(ResourceKey.create(Registries.ENTITY_TYPE,
+							ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "meteor"))));
 
 }

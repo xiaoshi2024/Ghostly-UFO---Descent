@@ -25,15 +25,15 @@ public final class BlockRegistry {
             BLOCKS.registerBlock("ghostly_sarcophagus", properties -> new GhostlySarcophagus_block(
                     properties.noOcclusion()
                             .mapColor(MapColor.COLOR_PURPLE)
-                            .strength(50.0F, 1200.0F) // 高硬度
+                            .strength(50.0F, 1200.0F) // 黑曜石级别的硬度和爆炸抗性
                             .requiresCorrectToolForDrops() // 需要正确的工具才能掉落
-            ));
+    ));
 
     public static final Supplier<UfoL_block> UFO_L_BLOCK =
             BLOCKS.registerBlock("ufo_l", properties -> new UfoL_block(
                     properties.noOcclusion()
                             .mapColor(MapColor.COLOR_BLUE)
-                            .strength(50.0F, 1200.0F) // 高硬度
+                            .strength(50.0F, 1200.0F) // 黑曜石级别的硬度和爆炸抗性，与棺材保持一致
                             .requiresCorrectToolForDrops() // 需要正确的工具才能掉落
             ));
 
