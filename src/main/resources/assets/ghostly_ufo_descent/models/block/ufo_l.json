@@ -1,5 +1,9 @@
 {
   "textures": {
-    "particle": "ghostly_ufo_descent:block/ufo_l"
-  }
+    "0": "ghostly_ufo_descent:block/ufo_l",
+    "particle": "ghostly_ufo_descent:block/ufo_l",
+    "emissive": "ghostly_ufo_descent:block/ufo_l_emissive"
+  },
+  "elements": [
+  ]
 }

@@ -6,9 +6,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class UfoL_blockentityRenderer <R extends BlockEntityRenderState & GeoRenderState> extends GeoBlockRenderer<UfoL_blockentity, R> {
     public UfoL_blockentityRenderer(BlockEntityRendererProvider.Context context) {
         super(new UfoL_blockModel());
+        // 添加发光图层
+        new AutoGlowingGeoLayer<>(this);
     }
 }

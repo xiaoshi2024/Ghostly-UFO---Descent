@@ -40,10 +40,16 @@ public class UfoL_blockentity extends BlockEntity implements GeoBlockEntity {
         }));
     }
 
-
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
+    }
+
+    // 检查方块是否处于发光状态
+    public boolean isPowered() {
+        BlockState state = this.getBlockState();
+        return state.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED) && 
+               state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED);
     }
 }
 

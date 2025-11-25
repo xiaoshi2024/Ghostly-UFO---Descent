@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -36,6 +37,7 @@ import java.util.Optional;
 
 public class UfoL_block extends BaseEntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     private static final VoxelShape SHAPE = makeShape();
 
     public UfoL_block(BlockBehaviour.Properties properties) {
@@ -46,7 +48,7 @@ public class UfoL_block extends BaseEntityBlock {
                 .isSuffocating((state, getter, pos) -> false)        // 不会造成窒息
                 .isViewBlocking((state, getter, pos) -> false)       // 不阻挡视线
         );
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
     }
 
     @Override
@@ -60,6 +62,8 @@ public class UfoL_block extends BaseEntityBlock {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
+
+        boolean operationPerformed = false;
 
         // 检查玩家是否处于灵魂状态
         if (player instanceof ServerPlayer serverPlayer) {
@@ -98,14 +102,14 @@ public class UfoL_block extends BaseEntityBlock {
                             serverPlayer.teleportTo(overworld, x, y, z, java.util.Set.of(), yaw, pitch, false);
 
                             // 重置玩家的灵魂状态
-                            serverPlayer.setInvisible(false); // 恢复可见
+                            serverPlayer.setInvisible(true); // 不恢复
                             serverPlayer.setInvulnerable(false); // 恢复可受伤
                             serverPlayer.getPersistentData().putBoolean("soul_state", false);
 
                             // 发送消息给玩家
                             serverPlayer.sendSystemMessage(Component.translatable("block.ghostly_ufo_descent.ufo.returned_to_body"));
 
-                            return InteractionResult.SUCCESS;
+                            operationPerformed = true;
                         } else {
                             serverPlayer.sendSystemMessage(Component.translatable("block.ghostly_ufo_descent.ufo.overworld_not_found"));
                         }
@@ -120,12 +124,18 @@ public class UfoL_block extends BaseEntityBlock {
             }
         }
 
-        return InteractionResult.PASS;
+        // 如果没有执行传送操作，则切换发光状态
+        if (!operationPerformed) {
+            level.setBlock(pos, state.cycle(POWERED), 3);
+        }
+
+        return InteractionResult.SUCCESS;
     }
+
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, POWERED);
     }
 
     @Nullable
@@ -149,7 +159,7 @@ public class UfoL_block extends BaseEntityBlock {
     public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE; // 碰撞形状与视觉形状一致
     }
-    
+
     // 移除不存在的方法
 
     @Override
@@ -163,6 +173,11 @@ public class UfoL_block extends BaseEntityBlock {
     }
 
     @Override
+    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+        return state.getValue(POWERED) ? 15 : 0; // 发光状态时亮度为15，否则为0
+    }
+
+    @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         return world.getBlockState(pos.below()).isSolid();
     }
@@ -173,19 +188,19 @@ public class UfoL_block extends BaseEntityBlock {
 
         // 基础主体 - 更大更明显的核心区域
         shape = Shapes.join(shape, Shapes.box(0.25, 0.3, 0.25, 0.75, 0.7, 0.75), BooleanOp.OR);
-        
+
         // 底部圆盘 - 覆盖更大区域便于点击
         shape = Shapes.join(shape, Shapes.box(0.1, 0.35, 0.1, 0.9, 0.4, 0.9), BooleanOp.OR);
-        
+
         // 顶部发光部分
         shape = Shapes.join(shape, Shapes.box(0.4, 0.7, 0.4, 0.6, 0.9, 0.6), BooleanOp.OR);
-        
+
         // 扩展的交互区域 - 增加侧面的碰撞箱
         shape = Shapes.join(shape, Shapes.box(0.0, 0.4, 0.4, 0.2, 0.6, 0.6), BooleanOp.OR);
         shape = Shapes.join(shape, Shapes.box(0.8, 0.4, 0.4, 1.0, 0.6, 0.6), BooleanOp.OR);
         shape = Shapes.join(shape, Shapes.box(0.4, 0.4, 0.0, 0.6, 0.6, 0.2), BooleanOp.OR);
         shape = Shapes.join(shape, Shapes.box(0.4, 0.4, 0.8, 0.6, 0.6, 1.0), BooleanOp.OR);
-        
+
         // 中部平台 - 增加更多交互点
         shape = Shapes.join(shape, Shapes.box(0.15, 0.45, 0.15, 0.85, 0.55, 0.85), BooleanOp.OR);
 
