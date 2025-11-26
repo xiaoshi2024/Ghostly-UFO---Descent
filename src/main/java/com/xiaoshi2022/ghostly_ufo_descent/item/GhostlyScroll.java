@@ -179,59 +179,12 @@ public class GhostlyScroll extends Item implements GeoItem {
              // 播放化形声音
                     level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ILLUSIONER_MIRROR_MOVE, SoundSource.BLOCKS, 1.0F, 1.0F);
              
-             // Transformation机制：方块化形为玩家形象
-             try {
-                 // 获取基于方块类型的眼睛颜色
-                 byte eyeColor = getEyeColorFromBlock(block);
-                 
-                 // 创建玩家装备的副本
-                 EnumMap<EquipmentSlot, ItemStack> equipment = new EnumMap<>(EquipmentSlot.class);
-                 for (EquipmentSlot slot : EquipmentSlot.values()) {
-                     equipment.put(slot, player.getItemBySlot(slot).copy());
-                 }
-                 
-                 // 创建化形实体（使用SpiritPossessor类）
-                 SpiritPossessor transformedEntity = SpiritPossessor.createWithPlayer(level, player);
-                 
-                 // 设置位置（方块中心）
-                 transformedEntity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-                 transformedEntity.setYRot(player.getYRot());
-                 
-                 // 设置眼睛颜色
-                 transformedEntity.setEyeColorType(eyeColor);
-                 
-                 // 存储化形相关信息
-                 transformedEntity.getPersistentData().putString("transformation_type", "block");
-                 transformedEntity.getPersistentData().putString("original_block", block.getName().toString());
-                 
-                 // 生成实体
-                 level.addFreshEntity(transformedEntity);
-                 
-                 // 移除原方块
+             // 使用化形管理器处理方块化形
+             boolean success = TransformationManager.transformBlock(player, level, pos, state, block, blockEntity);
+             
+             // 如果化形成功，移除原方块
+             if (success) {
                  level.removeBlock(pos, false);
-                 
-             } catch (Exception e) {
-                 // 如果化形失败，尝试添加简单的灵魂效果
-                 try {
-                     // 尝试为方块添加发光效果 - 使用更安全的方式
-                     BooleanProperty litProperty = BooleanProperty.create("lit");
-                     BooleanProperty poweredProperty = BooleanProperty.create("powered");
-                     
-                     if (state.hasProperty(litProperty)) {
-                         level.setBlock(pos, state.setValue(litProperty, true), 3);
-                     } else if (state.hasProperty(poweredProperty)) {
-                         level.setBlock(pos, state.setValue(poweredProperty, true), 3);
-                     } else {
-                         // 如果方块没有这些属性，可以考虑其他方式添加效果
-                         if (blockEntity != null) {
-                             // 为方块实体添加灵魂标记
-                             blockEntity.getPersistentData().putBoolean("has_soul", true);
-                             blockEntity.setChanged();
-                         }
-                     }
-                 } catch (Exception ex) {
-                     // 忽略可能的错误
-                 }
              }
          }
      }

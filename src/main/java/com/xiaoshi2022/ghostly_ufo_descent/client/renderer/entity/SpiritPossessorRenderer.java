@@ -123,6 +123,27 @@ public class SpiritPossessorRenderer extends AbstractZombieRenderer<SpiritPosses
      */
     public void getPlayerSkinFromUUID(UUID playerUUID, String playerName) {
         try {
+            // 检查皮肤是否已经在缓存中，如果是则直接返回
+            if (cachedPlayerSkinsByUUID.containsKey(playerUUID)) {
+                return;
+            }
+            
+            // 检查UUID不匹配情况
+            if (uuidMissmatches.containsKey(playerUUID)) {
+                UUID correctUUID = uuidMissmatches.get(playerUUID);
+                if (cachedPlayerSkinsByUUID.containsKey(correctUUID)) {
+                    return;
+                }
+            }
+            
+            // 检查名称缓存
+            if (playerName != null) {
+                if (cachedPlayerSkinsByName.containsKey(playerName) || 
+                    cachedPlayerSkinsByName.containsKey(playerName.toLowerCase())) {
+                    return;
+                }
+            }
+
             if (inProgress == null) {
                 inProgress = new GameProfile(playerUUID, playerName);
             }

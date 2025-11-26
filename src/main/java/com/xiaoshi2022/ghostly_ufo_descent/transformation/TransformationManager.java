@@ -1,5 +1,6 @@
 package com.xiaoshi2022.ghostly_ufo_descent.transformation;
 
+import com.xiaoshi2022.ghostly_ufo_descent.api.codec.CodecUtils;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.particles.ParticleTypes;
 import java.util.EnumMap;
 
@@ -60,7 +63,7 @@ public class TransformationManager {
             
             // 存储化形相关信息
             transformedEntity.getPersistentData().putString("transformation_type", "block");
-            transformedEntity.getPersistentData().putString("original_block", block.getName().toString());
+            transformedEntity.getPersistentData().putString("original_block", BuiltInRegistries.BLOCK.getKey(block).toString());
             
             // 生成实体
             level.addFreshEntity(transformedEntity);
@@ -117,7 +120,13 @@ public class TransformationManager {
             
             // 存储化形相关信息
             spiritPossessor.getPersistentData().putString("transformation_type", "item");
-            spiritPossessor.getPersistentData().putString("original_item", itemStack.getDisplayName().getString());
+            spiritPossessor.getPersistentData().putString("original_item", itemStack.getItem().toString());
+            // 存储物品栈的完整数据
+            CompoundTag itemTag = CodecUtils.toNBT(ItemStack.CODEC, itemStack)
+                    .filter(CompoundTag.class::isInstance)
+                    .map(CompoundTag.class::cast)
+                    .orElseGet(CompoundTag::new);
+            spiritPossessor.getPersistentData().put("original_item_stack", itemTag);
             
             // 生成实体
             level.addFreshEntity(spiritPossessor);
