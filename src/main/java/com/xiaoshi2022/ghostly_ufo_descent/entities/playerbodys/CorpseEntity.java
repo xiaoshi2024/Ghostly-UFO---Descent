@@ -559,6 +559,12 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
         setCorpseName(valueInput.getStringOr("CorpseName", ""));
         setIsSkeleton(valueInput.getBooleanOr("IsSkeleton", false));
         setCorpseModel(valueInput.getByteOr("CorpseModel", (byte) 0));
+        
+        // 读取灵魂眼睛颜色数据
+        byte soulEyeColor = valueInput.getByteOr("soul_eye_color", (byte) -1);
+        if (soulEyeColor != -1) {
+            this.getPersistentData().putByte("soul_eye_color", soulEyeColor);
+        }
 
         // 读取装备
         Optional<CompoundTag> optionalEquipmentTag = ValueInputOutputUtils.getTag(valueInput, "Equipment");
@@ -599,6 +605,14 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
         valueOutput.putString("CorpseName", getCorpseName());
         valueOutput.putBoolean("IsSkeleton", isSkeleton());
         valueOutput.putByte("CorpseModel", getCorpseModel());
+        
+        // 保存灵魂眼睛颜色数据
+        if (this.getPersistentData().contains("soul_eye_color")) {
+            Optional<Byte> soulEyeColorOpt = this.getPersistentData().getByte("soul_eye_color");
+            if (soulEyeColorOpt.isPresent()) {
+                valueOutput.putByte("soul_eye_color", soulEyeColorOpt.get());
+            }
+        }
 
         // 保存装备
         CompoundTag equipmentTag = new CompoundTag();

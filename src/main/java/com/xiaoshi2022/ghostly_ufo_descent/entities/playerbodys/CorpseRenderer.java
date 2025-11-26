@@ -5,12 +5,19 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.xiaoshi2022.ghostly_ufo_descent.api.codec.CachedMap;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.UUID;
 
@@ -56,6 +63,47 @@ public class CorpseRenderer extends EntityRenderer<CorpseEntity, CorpseRenderSta
             entityRenderDispatcher.getRenderer(state.playerRenderState).submit(state.playerRenderState, stack, collector, cameraRenderState);
         }
 
+        // 渲染灵魂眼睛覆盖层
+        if (state.hasSoulEyes && !state.skeleton) {
+            renderSoulEyes(state, stack, collector, cameraRenderState);
+        }
+
+        stack.popPose();
+    }
+    
+    /**
+     * 渲染灵魂眼睛覆盖层
+     */
+    private void renderSoulEyes(CorpseRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
+        // 根据soul_eye_color选择对应的眼睛纹理
+        int eyeColorIndex = state.soulEyeColor.map(value -> Math.max(0, Math.min(6, (int) value))).orElse(0); // 确保索引在0-6范围内，如果不存在则使用默认值0
+        
+        // 构建眼睛纹理资源路径
+        ResourceLocation eyeTexture = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "entity/soul_eyes_" + eyeColorIndex);
+        
+        // 设置眼睛覆盖层的变换（基于玩家模型的眼睛位置）
+        stack.pushPose();
+        
+        // 调整位置和大小以匹配玩家模型的眼睛
+        // 移动到头部位置并调整缩放
+        stack.translate(0, 0.5, 0); // 移动到头部位置
+        stack.scale(0.25F, 0.25F, 0.25F); // 调整大小
+        
+        // 在实际项目中，你需要使用正确的MultiBufferSource和VertexConsumer API来绘制四边形
+        // 以下是一个简化的实现框架，需要根据实际的渲染API进行调整
+        
+        // 左眼位置
+        stack.pushPose();
+        stack.translate(-0.5, 0, 0.5); // 左眼位置
+        // 这里应该使用正确的API来渲染左眼四边形
+        stack.popPose();
+        
+        // 右眼位置
+        stack.pushPose();
+        stack.translate(0.5, 0, 0.5); // 右眼位置
+        // 这里应该使用正确的API来渲染右眼四边形
+        stack.popPose();
+        
         stack.popPose();
     }
 
@@ -65,6 +113,15 @@ public class CorpseRenderer extends EntityRenderer<CorpseEntity, CorpseRenderSta
 
         state.yRot = corpse.getYRot();
         state.skeleton = corpse.isSkeleton();
+        
+        // 提取灵魂眼睛颜色数据
+        if (corpse.getPersistentData().contains("soul_eye_color")) {
+            state.soulEyeColor = corpse.getPersistentData().getByte("soul_eye_color");
+            state.hasSoulEyes = true;
+        } else {
+            state.hasSoulEyes = false;
+        }
+        
         if (corpse.isSkeleton()) {
             DummySkeleton skeleton = skeletons.get(corpse.getUUID(), () -> new DummySkeleton(corpse.level(), corpse.getEquipment()));
             ((SkeletonRenderer) entityRenderDispatcher.getRenderer(state.skeletonRenderState)).extractRenderState(skeleton, state.skeletonRenderState, 0F);

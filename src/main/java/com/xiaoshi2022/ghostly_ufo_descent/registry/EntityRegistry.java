@@ -1,5 +1,6 @@
 package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
+import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.UfoPangenas;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseEntity;
@@ -18,6 +19,15 @@ public final class EntityRegistry {
 
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
 			DeferredRegister.create(Registries.ENTITY_TYPE, "ghostly_ufo_descent");
+
+	// 注册覆灵者实体
+	public static final Supplier<EntityType<SpiritPossessor>> SPIRIT_POSSESSOR = ENTITY_TYPES.register("spirit_possessor",
+			() -> EntityType.Builder.of(SpiritPossessor::new, MobCategory.MONSTER)
+					.sized(0.6f, 1.8f)
+					.eyeHeight(1.62f)
+					.clientTrackingRange(12)
+					.build(ResourceKey.create(Registries.ENTITY_TYPE,
+							ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "spirit_possessor"))));
 
 	public static final Supplier<EntityType<SporeStarPerson>> SPORE_STAR_PERSON = ENTITY_TYPES.register("spore_star_person",
 			() -> EntityType.Builder.of(SporeStarPerson::new, MobCategory.CREATURE)

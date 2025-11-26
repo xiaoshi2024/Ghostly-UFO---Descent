@@ -4,8 +4,10 @@ import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.GhostlySarcopha
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.PhagenaCropRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.UfoL_blockentityRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.EntityMeteorRenderer;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.SpiritPossessorRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.SporeStarPersonRenerer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.UfoPangenasRenderer;
+import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.UfoPangenas;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseRenderer;
@@ -45,6 +47,8 @@ public class GhostlyUFODescentClient {
         EntityRenderers.register(EntityRegistry.CORPSE_ENTITY.get(), CorpseRenderer::new);
         // 注册极噬者UFO渲染器
         EntityRenderers.register(EntityRegistry.UFO_PANGENAS.get(), UfoPangenasRenderer::new);
+        // 注册覆灵者实体渲染器
+        EntityRenderers.register(EntityRegistry.SPIRIT_POSSESSOR.get(), SpiritPossessorRenderer::new);
 
         EntityRenderers.register(EntityRegistry.METEOR.get(), EntityMeteorRenderer::new);
 
@@ -59,6 +63,8 @@ public class GhostlyUFODescentClient {
         event.put(EntityRegistry.SPORE_STAR_PERSON.get(), SporeStarPerson.createAttributes());
         // 注册极噬者UFO的属性
         event.put(EntityRegistry.UFO_PANGENAS.get(), UfoPangenas.createAttributes());
+        // 注册覆灵者的属性
+        event.put(EntityRegistry.SPIRIT_POSSESSOR.get(), SpiritPossessor.createAttributes().build());
     }
 
     @SubscribeEvent

@@ -7,6 +7,7 @@
   "entity.ghostly_ufo_descent.spore_star_person": "孢子星人",
   "entity.ghostly_ufo_descent.ufo_pangenas": "极噬者UFO",
   "entity.ghostly_ufo_descent.corpse_entity": "你的躯体",
+  "entity.ghostly_ufo_descent.spirit_possessor": "覆灵者",
 
   "item.ghostly_ufo_descent.phagan_seeds": "极噬种子",
   "item.ghostly_ufo_descent.ghostly_scroll": "鬼怪卷轴",
@@ -40,6 +41,12 @@
   "entity.ghostly_ufo_descent.corpse.display_name_suffix": " (石棺休眠中)",
   "entity.ghostly_ufo_descent.corpse.all_items_returned": "所有物品已返回",
 
-  "subtitles.ufo_p":"UFO 语言"
+  "subtitles.ufo_p":"UFO 语言",
+
+  "message.ghostly_ufo_descent.soul_applied_main_hand": "灵魂效果已应用到主手物品！",
+  "message.ghostly_ufo_descent.soul_transform_block_success": "方块成功化形！",
+  "message.ghostly_ufo_descent.soul_applied_entity": "灵魂效果已应用到物品！",
+  "message.ghostly_ufo_descent.soul_transform_item_success": "物品化形成功！",
+  "message.ghostly_ufo_descent.soul_transform_item_failed": "物品化形失败。"
 
 }

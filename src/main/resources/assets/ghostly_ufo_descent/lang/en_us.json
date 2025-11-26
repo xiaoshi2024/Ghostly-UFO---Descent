@@ -7,6 +7,8 @@
   "entity.ghostly_ufo_descent.spore_star_person": "Spore Star Person",
   "entity.ghostly_ufo_descent.ufo_pangenas": "UFO Pangenas",
   "entity.ghostly_ufo_descent.corpse_entity": "Your Corpse",
+  "entity.ghostly_ufo_descent.spirit_possessor": "Spirit Possessor",
+
 
   "item.ghostly_ufo_descent.phagan_seeds": "Phagan Seeds",
   "item.ghostly_ufo_descent.ghostly_scroll": "Ghostly Scroll",
@@ -39,5 +41,11 @@
   "entity.ghostly_ufo_descent.corpse.display_name_suffix": " (Sarcophagus Sleep)",
   "entity.ghostly_ufo_descent.corpse.all_items_returned": "All Items",
   
-  "subtitles.ufo_p":"UFO Lang"
+  "subtitles.ufo_p":"UFO Lang",
+
+  "message.ghostly_ufo_descent.soul_applied_main_hand": "Soul effect applied to main hand item!",
+  "message.ghostly_ufo_descent.soul_transform_block_success": "Block successfully transformed!",
+  "message.ghostly_ufo_descent.soul_applied_entity": "Soul effect applied to item!",
+  "message.ghostly_ufo_descent.soul_transform_item_success": "Item transformation successful!",
+  "message.ghostly_ufo_descent.soul_transform_item_failed": "Item transformation failed."
 }
