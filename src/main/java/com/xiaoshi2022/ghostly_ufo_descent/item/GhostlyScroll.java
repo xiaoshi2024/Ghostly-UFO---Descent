@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -27,10 +28,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.core.particles.ParticleTypes;
+import java.util.List;
 import java.util.EnumMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -82,7 +85,7 @@ public class GhostlyScroll extends Item implements GeoItem {
         // We've marked the "activate" animation as being triggerable from the server
     }
 
-    // Let's handle our use method so that we activate the animation when right-clicking while holding the box
+    // 处理物品使用方法，激活动画并实现技能效果
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         // 只有在副手使用时才触发覆灵技能
@@ -157,9 +160,90 @@ public class GhostlyScroll extends Item implements GeoItem {
             player.startUsingItem(hand);
             return InteractionResult.SUCCESS;
         } else {
-            // 主手使用时返回默认行为
-            return InteractionResult.PASS;
+            // 主手使用时，处理灵控技能（shift+点击）
+            return handleSpiritControl(level, player, hand);
         }
+    }
+    
+    /**
+     * 处理灵控技能：当玩家主手持有鬼怪卷轴并按住shift点击敌人时，指挥覆灵者攻击该目标
+     */
+    private InteractionResult handleSpiritControl(Level level, Player player, InteractionHand hand) {
+        // 检查是否是主手持有并且按住了shift键
+        if (hand == InteractionHand.MAIN_HAND && player.isShiftKeyDown()) {
+            // 获取玩家瞄准的目标
+            HitResult hitResult = player.pick(10.0D, 0.0F, false);
+            
+            // 如果命中了实体目标
+            if (hitResult.getType() == HitResult.Type.ENTITY) {
+                EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+                LivingEntity targetEntity = null;
+                
+                // 检查命中的是否是生物实体
+                if (entityHitResult.getEntity() instanceof LivingEntity) {
+                    targetEntity = (LivingEntity) entityHitResult.getEntity();
+                    
+                    // 玩家不能控制覆灵者攻击自己
+                    if (targetEntity == player) {
+                        player.displayClientMessage(Component.literal("你不能指挥覆灵者攻击自己！"), true);
+                        return InteractionResult.FAIL;
+                    }
+                    
+                    // 找到玩家周围的覆灵者实体
+                    List<SpiritPossessor> spiritPossessors = findNearbySpiritPossessors(level, player);
+                    
+                    if (spiritPossessors.isEmpty()) {
+                        player.displayClientMessage(Component.literal("附近没有覆灵者可以指挥！"), true);
+                        return InteractionResult.FAIL;
+                    } else {
+                        // 指挥所有覆灵者攻击目标
+                        int controlledCount = 0;
+                        for (SpiritPossessor spirit : spiritPossessors) {
+                            spirit.setTarget(targetEntity);
+                            controlledCount++;
+                        }
+                        
+                        // 播放控制声音
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_EYE_DEATH, SoundSource.PLAYERS, 1.0F, 1.2F);
+                        
+                        // 显示控制成功消息
+                        player.displayClientMessage(Component.literal("已指挥 " + controlledCount + " 个覆灵者攻击目标！"), false);
+                        
+                        return InteractionResult.SUCCESS;
+                    }
+                } else {
+                    player.displayClientMessage(Component.literal("请瞄准一个生物实体！"), true);
+                    return InteractionResult.FAIL;
+                }
+            } else {
+                player.displayClientMessage(Component.literal("请瞄准一个目标敌人！"), true);
+                return InteractionResult.FAIL;
+            }
+        }
+        
+        // 不是shift+点击，返回默认行为
+        return InteractionResult.PASS;
+    }
+    
+    /**
+     * 查找玩家周围的覆灵者实体
+     */
+    private List<SpiritPossessor> findNearbySpiritPossessors(Level level, Player player) {
+        // 搜索半径：16格
+        double searchRadius = 16.0D;
+        
+        // 创建一个包围盒，覆盖玩家周围的区域
+        AABB boundingBox = new AABB(
+            player.getX() - searchRadius,
+            player.getY() - searchRadius,
+            player.getZ() - searchRadius,
+            player.getX() + searchRadius,
+            player.getY() + searchRadius,
+            player.getZ() + searchRadius
+        );
+        
+        // 获取包围盒内的所有覆灵者实体
+        return level.getEntitiesOfClass(SpiritPossessor.class, boundingBox);
     }
     
     /**

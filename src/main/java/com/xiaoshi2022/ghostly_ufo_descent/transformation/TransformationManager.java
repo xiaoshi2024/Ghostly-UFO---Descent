@@ -2,6 +2,7 @@ package com.xiaoshi2022.ghostly_ufo_descent.transformation;
 
 import com.xiaoshi2022.ghostly_ufo_descent.api.codec.CodecUtils;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
+import com.xiaoshi2022.ghostly_ufo_descent.transformation.TransformationUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -65,6 +66,9 @@ public class TransformationManager {
             transformedEntity.getPersistentData().putString("transformation_type", "block");
             transformedEntity.getPersistentData().putString("original_block", BuiltInRegistries.BLOCK.getKey(block).toString());
             
+            // 应用化形属性
+            TransformationUtils.setTransformationProperties(transformedEntity);
+            
             // 生成实体
             level.addFreshEntity(transformedEntity);
             
@@ -127,6 +131,9 @@ public class TransformationManager {
                     .map(CompoundTag.class::cast)
                     .orElseGet(CompoundTag::new);
             spiritPossessor.getPersistentData().put("original_item_stack", itemTag);
+            
+            // 应用化形属性
+            TransformationUtils.setTransformationProperties(spiritPossessor);
             
             // 生成实体
             level.addFreshEntity(spiritPossessor);

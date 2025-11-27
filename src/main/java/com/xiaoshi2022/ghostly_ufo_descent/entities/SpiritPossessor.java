@@ -1,6 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent.entities;
 
 import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
+import com.xiaoshi2022.ghostly_ufo_descent.item.GhostlyScroll;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -20,12 +21,14 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
@@ -77,11 +80,59 @@ public class SpiritPossessor extends Zombie {
     protected void registerGoals() {
         super.registerGoals();
 
+        // 清除所有默认目标，因为覆灵者不应该主动攻击玩家
+        this.targetSelector.removeAllGoals(goal -> true);
+        
         // 添加更多自然的行为目标
         this.goalSelector.addGoal(1, new FloatGoal(this)); // 游泳目标
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false)); // 添加近战攻击目标，使其能够攻击我们设置的目标
+        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        
+        // 添加一个被动的目标选择器，使其能够持续追踪我们手动设置的目标
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false, null));
+    }
+    
+    /**
+     * 检查玩家是否持有鬼怪卷轴
+     */
+    private boolean hasGhostlyScroll(Player player) {
+        // 检查玩家的主手
+        if (player.getMainHandItem().getItem() instanceof GhostlyScroll) {
+            return true;
+        }
+        // 检查玩家的副手
+        if (player.getOffhandItem().getItem() instanceof GhostlyScroll) {
+            return true;
+        }
+        // 检查玩家的所有物品栏
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (stack.getItem() instanceof GhostlyScroll) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        // 如果目标是玩家且持有鬼怪卷轴，则不能攻击
+        if (target instanceof Player player && hasGhostlyScroll(player)) {
+            return false;
+        }
+        return super.canAttack(target);
+    }
+    
+    @Override
+    public void setTarget(LivingEntity target) {
+        // 如果目标是玩家且持有鬼怪卷轴，则不将其设为目标
+        if (target instanceof Player player && hasGhostlyScroll(player)) {
+            super.setTarget(null);
+        } else {
+            super.setTarget(target);
+        }
     }
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {

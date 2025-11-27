@@ -8,6 +8,8 @@
   "entity.ghostly_ufo_descent.ufo_pangenas": "极噬者UFO",
   "entity.ghostly_ufo_descent.corpse_entity": "你的躯体",
   "entity.ghostly_ufo_descent.spirit_possessor": "覆灵者",
+  "entity.ghostly_ufo_descent.meteor": "飞碟残骸",
+
 
   "item.ghostly_ufo_descent.phagan_seeds": "极噬种子",
   "item.ghostly_ufo_descent.ghostly_scroll": "鬼怪卷轴",
@@ -47,6 +49,11 @@
   "message.ghostly_ufo_descent.soul_transform_block_success": "方块成功化形！",
   "message.ghostly_ufo_descent.soul_applied_entity": "灵魂效果已应用到物品！",
   "message.ghostly_ufo_descent.soul_transform_item_success": "物品化形成功！",
-  "message.ghostly_ufo_descent.soul_transform_item_failed": "物品化形失败。"
+  "message.ghostly_ufo_descent.soul_transform_item_failed": "物品化形失败。",
+
+  "advancement.ghostly_ufo_descent.root.title": "幽灵UFO降临",
+  "advancement.ghostly_ufo_descent.root.description": "开始你的外星冒险",
+  "advancement.ghostly_ufo_descent.meteor_impact.title": "天外来客",
+  "advancement.ghostly_ufo_descent.meteor_impact.description": "目睹流星撞击并发现外星秘密"
 
 }

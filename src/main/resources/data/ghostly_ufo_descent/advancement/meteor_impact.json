@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:fire_charge"
+    },
+    "title": {
+      "translate": "advancement.ghostly_ufo_descent.meteor_impact.title"
+    },
+    "description": {
+      "translate": "advancement.ghostly_ufo_descent.meteor_impact.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "ghostly_ufo_descent:root",
+  "criteria": {
+    "meteor_impact": {
+      "trigger": "ghostly_ufo_descent:meteor_impact"
+    }
+  },
+  "requirements": [
+    [
+      "meteor_impact"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  }
+}

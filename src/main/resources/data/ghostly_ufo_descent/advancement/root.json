@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "id": "ghostly_ufo_descent:ghostly_sarcophagus"
+    },
+    "title": {
+      "translate": "advancement.ghostly_ufo_descent.root.title"
+    },
+    "description": {
+      "translate": "advancement.ghostly_ufo_descent.root.description"
+    },
+    "background": "ghostly_ufo_descent:block/stones",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ]
+}

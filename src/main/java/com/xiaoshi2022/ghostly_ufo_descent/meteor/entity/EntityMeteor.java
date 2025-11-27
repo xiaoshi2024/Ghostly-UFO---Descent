@@ -1,6 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent.meteor.entity;
 
 import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
+import com.xiaoshi2022.ghostly_ufo_descent.advancement.trigger.MeteorImpactTrigger;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.BlockRegistry;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry;
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -147,6 +149,8 @@ public class EntityMeteor extends Entity implements GeoEntity {
             this.setDeltaMovement(this.motion);
             this.move(MoverType.SELF, this.getDeltaMovement());
 
+            // 检测与实体的碰撞 - 让Minecraft的成就系统自动检测伤害
+
             // 应用重力
             this.motion = this.motion.add(0, -0.04, 0);
         }
@@ -189,23 +193,55 @@ public class EntityMeteor extends Entity implements GeoEntity {
         }
     }
 
+
+
     private void explode() {
         if (!this.level().isClientSide()) {
             GhostlyUFODescent.LOGGER.info("Meteor exploding at position: {}", this.blockPosition());
-            
-            // 先生成陨石坑，确保在爆炸前完成
+
+            // 生成陨石坑
             generateCrater();
-            
-            // 增加爆炸强度，使其更加壮观
-            float explosionPower = 2.0F * this.getSize(); // 爆炸强度翻倍
+
+            // 触发"流星撞击"成就
+            triggerMeteorImpactAdvancement();
+
+            float explosionPower = 2.0F * this.getSize();
             this.level().explode(this, this.getX(), this.getY(), this.getZ(),
                     explosionPower, Level.ExplosionInteraction.TNT);
 
-            // 播放更大的爆炸声音
             this.level().playSound(null, this.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(),
                     SoundSource.BLOCKS, 6.0F, (1.0F + (this.level().random.nextFloat() - this.level().random.nextFloat()) * 0.2F) * 0.7F);
 
             this.discard();
+        }
+    }
+
+    // 触发流星撞击成就
+    private void triggerMeteorImpactAdvancement() {
+        GhostlyUFODescent.LOGGER.info("开始尝试触发流星撞击成就");
+        if (this.level() instanceof ServerLevel serverLevel) {
+            // 获取爆炸位置周围的玩家
+            AABB area = new AABB(this.blockPosition()).inflate(32.0); // 32格范围内的玩家
+            var players = serverLevel.getEntitiesOfClass(net.minecraft.world.entity.player.Player.class, area);
+            
+            GhostlyUFODescent.LOGGER.info("在32格范围内找到 {} 名玩家", players.size());
+            
+            for (var player : players) {
+                try {
+                    if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                        // 直接使用触发器，DeferredHolder.get()总是返回已注册的值
+                        GhostlyUFODescent.LOGGER.info("尝试授予玩家 {} 流星撞击成就", player.getName().getString());
+                        // 使用自定义触发器触发成就
+                        MeteorImpactTrigger.METEOR_IMPACT_TRIGGER.get().trigger(serverPlayer);
+                        GhostlyUFODescent.LOGGER.info("成功授予玩家 {} 流星撞击成就", player.getName().getString());
+                    }
+                } catch (Exception e) {
+                    GhostlyUFODescent.LOGGER.error("触发成就时出错: {}", e.getMessage());
+                    e.printStackTrace(); // 打印完整堆栈跟踪
+                }
+            }
+        } else {
+            GhostlyUFODescent.LOGGER.warn("不在服务端，跳过成就触发");
         }
     }
 

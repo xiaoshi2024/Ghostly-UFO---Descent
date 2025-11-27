@@ -8,6 +8,7 @@
   "entity.ghostly_ufo_descent.ufo_pangenas": "UFO Pangenas",
   "entity.ghostly_ufo_descent.corpse_entity": "Your Corpse",
   "entity.ghostly_ufo_descent.spirit_possessor": "Spirit Possessor",
+  "entity.ghostly_ufo_descent.meteor": "UFO debris",
 
 
   "item.ghostly_ufo_descent.phagan_seeds": "Phagan Seeds",
@@ -47,5 +48,10 @@
   "message.ghostly_ufo_descent.soul_transform_block_success": "Block successfully transformed!",
   "message.ghostly_ufo_descent.soul_applied_entity": "Soul effect applied to item!",
   "message.ghostly_ufo_descent.soul_transform_item_success": "Item transformation successful!",
-  "message.ghostly_ufo_descent.soul_transform_item_failed": "Item transformation failed."
+  "message.ghostly_ufo_descent.soul_transform_item_failed": "Item transformation failed.",
+
+  "advancement.ghostly_ufo_descent.root.title": "Ghostly UFO Descent",
+  "advancement.ghostly_ufo_descent.root.description": "Begin your alien adventure",
+  "advancement.ghostly_ufo_descent.meteor_impact.title": "Celestial Visitor",
+  "advancement.ghostly_ufo_descent.meteor_impact.description": "Witness a meteor impact and discover alien secrets"
 }
