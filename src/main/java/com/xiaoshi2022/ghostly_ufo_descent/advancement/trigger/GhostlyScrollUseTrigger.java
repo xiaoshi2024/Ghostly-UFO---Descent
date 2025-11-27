@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Optional;
 
-public class MeteorImpactTrigger extends SimpleCriterionTrigger<MeteorImpactTrigger.Instance> {
+public class GhostlyScrollUseTrigger extends SimpleCriterionTrigger<GhostlyScrollUseTrigger.Instance> {
     
     
     @Override

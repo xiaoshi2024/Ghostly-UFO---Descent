@@ -54,6 +54,7 @@
   "advancement.ghostly_ufo_descent.root.title": "幽灵UFO降临",
   "advancement.ghostly_ufo_descent.root.description": "开始你的外星冒险",
   "advancement.ghostly_ufo_descent.meteor_impact.title": "天外来客",
-  "advancement.ghostly_ufo_descent.meteor_impact.description": "目睹流星撞击并发现外星秘密"
-
+  "advancement.ghostly_ufo_descent.meteor_impact.description": "目睹流星撞击并发现外星秘密",
+  "advancement.ghostly_ufo_descent.ghostly_scroll_use.title": "鬼怪之力",
+  "advancement.ghostly_ufo_descent.ghostly_scroll_use.description": "驾驭鬼怪卷轴的强大力量"
 }

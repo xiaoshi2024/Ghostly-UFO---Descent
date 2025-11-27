@@ -1,7 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent.meteor.entity;
 
 import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
-import com.xiaoshi2022.ghostly_ufo_descent.advancement.trigger.MeteorImpactTrigger;
+import com.xiaoshi2022.ghostly_ufo_descent.advancement.trigger.ModTriggers;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.BlockRegistry;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry;
 import net.minecraft.core.BlockPos;
@@ -232,7 +232,7 @@ public class EntityMeteor extends Entity implements GeoEntity {
                         // 直接使用触发器，DeferredHolder.get()总是返回已注册的值
                         GhostlyUFODescent.LOGGER.info("尝试授予玩家 {} 流星撞击成就", player.getName().getString());
                         // 使用自定义触发器触发成就
-                        MeteorImpactTrigger.METEOR_IMPACT_TRIGGER.get().trigger(serverPlayer);
+                        ModTriggers.METEOR_IMPACT_TRIGGER.get().trigger(serverPlayer);
                         GhostlyUFODescent.LOGGER.info("成功授予玩家 {} 流星撞击成就", player.getName().getString());
                     }
                 } catch (Exception e) {
@@ -403,47 +403,53 @@ public class EntityMeteor extends Entity implements GeoEntity {
                 }
             }
 
-            // 测试模式：100%概率生成实体
-            spawnUfoPangenas(center, serverLevel);
-            spawnSporeStarPerson(center, serverLevel);
+            // 根据概率生成实体
+            // 40%概率生成UfoPangenas
+            if (random.nextDouble() < 0.4) {
+                spawnUfoPangenas(center, serverLevel);
+            }
+            // 50%概率生成SporeStarPerson
+            if (random.nextDouble() < 0.5) {
+                spawnSporeStarPerson(center, serverLevel);
+            }
         }
     }
 
-    private void spawnSarcophagusBlock(BlockPos center, ServerLevel serverLevel) {
-        try {
-            GhostlyUFODescent.LOGGER.info("Attempting to spawn sarcophagus block at crater center: {}", center);
-            
-            // 查找合适的放置位置
-            BlockPos spawnPos = findValidSpawnPos(center, serverLevel);
-            
-            if (spawnPos != null) {
-                GhostlyUFODescent.LOGGER.info("Found valid spawn position: {}", spawnPos);
-                try {
-                    // 使用BlockRegistry中定义的Supplier获取方块
-                    var sarcophagusBlock = BlockRegistry.GHOSTLY_SARCOPHAGUS_BLOCK.get();
-                    GhostlyUFODescent.LOGGER.info("Successfully retrieved sarcophagus block from registry");
-                    // 放置方块
-                    serverLevel.setBlockAndUpdate(spawnPos, sarcophagusBlock.defaultBlockState());
-                    GhostlyUFODescent.LOGGER.info("Spawned GhostlySarcophagus_block at {}", spawnPos);
-                } catch (Exception e) {
-                    GhostlyUFODescent.LOGGER.error("Failed to retrieve or place sarcophagus block: {}", e.getMessage());
-                    e.printStackTrace();
-                }
-            } else {
-                GhostlyUFODescent.LOGGER.warn("No valid spawn position found for sarcophagus within search range");
-                // 调试陨石坑底部情况
-                for (int y = 0; y > -10; y--) {
-                    BlockPos testPos = center.offset(0, y, 0);
-                    if (serverLevel.isLoaded(testPos)) {
-                        GhostlyUFODescent.LOGGER.warn("Block at {}: {}, Solid: {}", testPos, serverLevel.getBlockState(testPos).getBlock(), serverLevel.getBlockState(testPos).isSolid());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            GhostlyUFODescent.LOGGER.error("Failed to spawn GhostlySarcophagus_block: {}", e.getMessage());
-            e.printStackTrace();
-        }
-    }
+//    private void spawnSarcophagusBlock(BlockPos center, ServerLevel serverLevel) {
+//        try {
+//            GhostlyUFODescent.LOGGER.info("Attempting to spawn sarcophagus block at crater center: {}", center);
+//
+//            // 查找合适的放置位置
+//            BlockPos spawnPos = findValidSpawnPos(center, serverLevel);
+//
+//            if (spawnPos != null) {
+//                GhostlyUFODescent.LOGGER.info("Found valid spawn position: {}", spawnPos);
+//                try {
+//                    // 使用BlockRegistry中定义的Supplier获取方块
+//                    var sarcophagusBlock = BlockRegistry.GHOSTLY_SARCOPHAGUS_BLOCK.get();
+//                    GhostlyUFODescent.LOGGER.info("Successfully retrieved sarcophagus block from registry");
+//                    // 放置方块
+//                    serverLevel.setBlockAndUpdate(spawnPos, sarcophagusBlock.defaultBlockState());
+//                    GhostlyUFODescent.LOGGER.info("Spawned GhostlySarcophagus_block at {}", spawnPos);
+//                } catch (Exception e) {
+//                    GhostlyUFODescent.LOGGER.error("Failed to retrieve or place sarcophagus block: {}", e.getMessage());
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                GhostlyUFODescent.LOGGER.warn("No valid spawn position found for sarcophagus within search range");
+//                // 调试陨石坑底部情况
+//                for (int y = 0; y > -10; y--) {
+//                    BlockPos testPos = center.offset(0, y, 0);
+//                    if (serverLevel.isLoaded(testPos)) {
+//                        GhostlyUFODescent.LOGGER.warn("Block at {}: {}, Solid: {}", testPos, serverLevel.getBlockState(testPos).getBlock(), serverLevel.getBlockState(testPos).isSolid());
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            GhostlyUFODescent.LOGGER.error("Failed to spawn GhostlySarcophagus_block: {}", e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
 
     private void spawnUfoPangenas(BlockPos center, ServerLevel serverLevel) {
         try {

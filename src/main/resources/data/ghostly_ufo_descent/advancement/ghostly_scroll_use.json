@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": {
+      "id": "ghostly_ufo_descent:ghostly_scroll"
+    },
+    "title": {
+      "translate": "advancement.ghostly_ufo_descent.ghostly_scroll_use.title"
+    },
+    "description": {
+      "translate": "advancement.ghostly_ufo_descent.ghostly_scroll_use.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "ghostly_ufo_descent:root",
+  "criteria": {
+    "ghostly_scroll_use": {
+      "trigger": "ghostly_ufo_descent:ghostly_scroll_use"
+    }
+  },
+  "requirements": [
+    [
+      "ghostly_scroll_use"
+    ]
+  ],
+  "rewards": {
+    "experience": 50
+  }
+}

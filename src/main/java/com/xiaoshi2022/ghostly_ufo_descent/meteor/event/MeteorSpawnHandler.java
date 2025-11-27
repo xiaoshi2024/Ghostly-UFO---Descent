@@ -21,6 +21,7 @@ public class MeteorSpawnHandler {
     private static int tickCounter = 0;
     private static final double METEOR_CHANCE = 0.15; // 15%的几率生成陨石
     private static final int MAX_METEORS_PER_CHUNK = 1;
+    private static boolean hasMeteorSpawned = false; // 记录是否已经生成过陨石
 
     @SubscribeEvent
     public static void onWorldTick(LevelTickEvent.Post event) {
@@ -58,7 +59,30 @@ public class MeteorSpawnHandler {
         //     return false;
         // }
 
-        // 随机检查
+        // 如果已经生成过陨石，则完全使用随机概率
+        if (hasMeteorSpawned) {
+            GhostlyUFODescent.LOGGER.info("Meteor has already spawned, using random chance: {}", METEOR_CHANCE);
+            return random.nextDouble() < METEOR_CHANCE;
+        }
+
+        // 获取所有玩家
+        List<? extends Player> players = level.players();
+        
+        // 检查是否有玩家在生存模式下待了4天（4天 = 4 * 24 * 72000 = 6912000 游戏刻）
+        for (Player player : players) {
+            if (!player.isCreative() && !player.isSpectator()) { // 只检查生存模式玩家
+                // 使用player.experienceLevel作为简单的游戏时间指标，或者使用其他方式
+                // 这里我们假设玩家达到一定等级意味着他们已经玩了足够长的时间
+                // 或者我们可以简单地使用玩家的游戏天数
+                int playerDays = (int)(level.getGameTime() / 24000); // 获取世界的天数
+                if (playerDays >= 4) { // 如果世界已经存在4天或以上
+                    GhostlyUFODescent.LOGGER.info("World has reached 4 days, triggering first meteor spawn.");
+                    return true; // 直接返回true，触发陨石生成
+                }
+            }
+        }
+
+        // 如果没有玩家达到4天生存时间，则使用随机概率
         return random.nextDouble() < METEOR_CHANCE;
     }
 
@@ -68,8 +92,31 @@ public class MeteorSpawnHandler {
             return;
         }
 
-        // 随机选择一个玩家作为目标
-        ServerPlayer targetPlayer = players.get(level.random.nextInt(players.size()));
+        // 获取世界天数
+        int worldDays = (int)(level.getGameTime() / 24000);
+        
+        ServerPlayer targetPlayer;
+        
+        // 如果是第4天或以上，从所有玩家中随机选择一个
+        if (worldDays >= 4) {
+            GhostlyUFODescent.LOGGER.info("World has reached day {}, randomly selecting a player from all online players.", worldDays);
+            targetPlayer = players.get(level.random.nextInt(players.size()));
+        } else {
+            // 否则优先选择生存模式玩家
+            targetPlayer = null;
+            for (ServerPlayer player : players) {
+                if (!player.isCreative() && !player.isSpectator()) {
+                    targetPlayer = player;
+                    break;
+                }
+            }
+
+            // 如果没有找到生存模式玩家，则随机选择一个玩家
+            if (targetPlayer == null) {
+                targetPlayer = players.get(level.random.nextInt(players.size()));
+            }
+        }
+
         BlockPos playerPos = targetPlayer.blockPosition();
 
         // 生成陨石的位置（在玩家周围随机位置的高空）
@@ -99,8 +146,11 @@ public class MeteorSpawnHandler {
         EntityMeteor meteor = new EntityMeteor(level, spawnX, spawnY, spawnZ, motion, size);
         level.addFreshEntity(meteor);
 
-        GhostlyUFODescent.LOGGER.info("Meteor spawned at ({}, {}, {}) targeting player at ({}, {}, {})",
+        // 标记已经生成过陨石
+        hasMeteorSpawned = true;
+        GhostlyUFODescent.LOGGER.info("Meteor spawned at ({}, {}, {}) targeting player at ({}, {}, {}). Meteor spawn status updated to: {}",
                 spawnX, spawnY, spawnZ,
-                playerPos.getX(), playerPos.getY(), playerPos.getZ());
+                playerPos.getX(), playerPos.getY(), playerPos.getZ(),
+                hasMeteorSpawned);
     }
 }

@@ -53,5 +53,7 @@
   "advancement.ghostly_ufo_descent.root.title": "Ghostly UFO Descent",
   "advancement.ghostly_ufo_descent.root.description": "Begin your alien adventure",
   "advancement.ghostly_ufo_descent.meteor_impact.title": "Celestial Visitor",
-  "advancement.ghostly_ufo_descent.meteor_impact.description": "Witness a meteor impact and discover alien secrets"
+  "advancement.ghostly_ufo_descent.meteor_impact.description": "Witness a meteor impact and discover alien secrets",
+  "advancement.ghostly_ufo_descent.ghostly_scroll_use.title": "Ghostly Power",
+  "advancement.ghostly_ufo_descent.ghostly_scroll_use.description": "Harness the power of the Ghostly Scroll"
 }

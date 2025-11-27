@@ -4,10 +4,12 @@ import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.item.GhostlyScrollRen
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry;
 import com.xiaoshi2022.ghostly_ufo_descent.transformation.TransformationManager;
+import com.xiaoshi2022.ghostly_ufo_descent.advancement.trigger.ModTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -102,6 +104,11 @@ public class GhostlyScroll extends Item implements GeoItem {
                     
                     // 扣除耐久度（20点）
                     scrollStack.hurtAndBreak(20, player, hand);
+                    
+                    // 触发成就
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        ModTriggers.GHOSTLY_SCROLL_USE_TRIGGER.get().trigger(serverPlayer);
+                    }
                     
                     // 检查玩家主手是否持有物品
                     ItemStack mainHandItem = player.getMainHandItem();
@@ -208,6 +215,11 @@ public class GhostlyScroll extends Item implements GeoItem {
                         
                         // 显示控制成功消息
                         player.displayClientMessage(Component.literal("已指挥 " + controlledCount + " 个覆灵者攻击目标！"), false);
+                        
+                        // 触发成就
+                        if (player instanceof ServerPlayer serverPlayer) {
+                            ModTriggers.GHOSTLY_SCROLL_USE_TRIGGER.get().trigger(serverPlayer);
+                        }
                         
                         return InteractionResult.SUCCESS;
                     }
