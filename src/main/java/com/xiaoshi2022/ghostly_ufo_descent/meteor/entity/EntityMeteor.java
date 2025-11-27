@@ -124,15 +124,6 @@ public class EntityMeteor extends Entity implements GeoEntity {
     public void tick() {
         super.tick();
 
-        // 无论是否在地面，都要减少fuse时间，确保最终会爆炸
-        int currentFuse = this.getFuse();
-        if (currentFuse > 0) {
-            this.setFuse(currentFuse - 1);
-            if (this.getFuse() <= 0) {
-                this.explode();
-            }
-        }
-
         if (!this.inGround) {
             Vec3 oldPos = this.position();
 
@@ -153,6 +144,15 @@ public class EntityMeteor extends Entity implements GeoEntity {
 
             // 应用重力
             this.motion = this.motion.add(0, -0.04, 0);
+        } else {
+            // 只有在接触地面后才开始倒计时并爆炸
+            int currentFuse = this.getFuse();
+            if (currentFuse > 0) {
+                this.setFuse(currentFuse - 1);
+                if (this.getFuse() <= 0) {
+                    this.explode();
+                }
+            }
         }
 
         // 生成粒子效果

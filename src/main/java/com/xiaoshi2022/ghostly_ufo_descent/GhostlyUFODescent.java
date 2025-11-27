@@ -100,6 +100,8 @@ public class GhostlyUFODescent {
         //一些常见的设置代码
         LOGGER.info("HELLO FROM COMMON SETUP");
 
+        // 以下代码已注释，因为我们移除了默认的示例配置项
+        /*
         if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
         }
@@ -107,6 +109,13 @@ public class GhostlyUFODescent {
         LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
 
         Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
+        */
+        
+        // 记录陨石配置信息
+        LOGGER.info("陨石配置: 降临天数={}, 生成概率={}, 检查间隔={}", 
+                   Config.METEOR_SPAWN_DAY.get(), 
+                   Config.METEOR_CHANCE.get(), 
+                   Config.METEOR_CHECK_INTERVAL.get());
 
 //        // 初始化维度注册
 //        com.xiaoshi2022.ghostly_ufo_descent.registry.DimensionRegistry.init();

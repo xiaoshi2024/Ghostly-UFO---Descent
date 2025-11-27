@@ -68,6 +68,12 @@ public class PhagenaHarvestHandler {
 
         // 创建孢子星人实体
         SporeStarPerson sporeStarPerson = new SporeStarPerson(EntityRegistry.SPORE_STAR_PERSON.get(), level);
+        
+        // 玩家种植的孢子星人有60%概率成为族长
+        if (level.getRandom().nextDouble() < 0.6) {
+            sporeStarPerson.setElder(true);
+        }
+        
         sporeStarPerson.setPos(spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D);
 
         // 生成实体

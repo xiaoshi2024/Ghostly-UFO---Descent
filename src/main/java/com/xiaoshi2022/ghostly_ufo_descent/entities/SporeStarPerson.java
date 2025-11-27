@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -14,12 +15,15 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import com.xiaoshi2022.ghostly_ufo_descent.registry.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -92,17 +96,27 @@ public class SporeStarPerson extends Animal implements GeoEntity {
         ItemStack itemstack = player.getItemInHand(hand);
         final boolean client = level().isClientSide();
 
-        // 如果是族长者，并且玩家持有下界之星，记录互动信息
-        if (isElder && itemstack.getItem() == Items.NETHER_STAR) {
+        // 如果是族长者，实现右键对话功能
+        if (isElder) {
             if (!client) {
-                LOGGER.info("族长者与玩家 {} 互动，玩家持有下界之星", player.getName().getString());
-                // 这里将来会实现自定义交易逻辑
+                // 显示对话信息给玩家
+                player.displayClientMessage(Component.translatable("entity.ghostly_ufo_descent.spore_star_person.elder.greeting"), false);
+                
+                // 如果玩家持有下界之星，显示特殊对话
+                if (itemstack.getItem() == Items.NETHER_STAR) {
+                    player.displayClientMessage(Component.translatable("entity.ghostly_ufo_descent.spore_star_person.elder.nether_star"), false);
+                    LOGGER.info("族长者与玩家 {} 互动，玩家持有下界之星", player.getName().getString());
+                } else {
+                    player.displayClientMessage(Component.translatable("entity.ghostly_ufo_descent.spore_star_person.elder.no_nether_star"), false);
+                    LOGGER.info("族长者与玩家 {} 互动", player.getName().getString());
+                }
             }
             return client ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
         }
 
-        // 普通互动
+        // 普通孢子星人互动
         if (!client) {
+            player.displayClientMessage(Component.translatable("entity.ghostly_ufo_descent.spore_star_person.normal.sound"), false);
             LOGGER.info("孢子星人与玩家 {} 互动", player.getName().getString());
         }
 
@@ -210,6 +224,13 @@ public class SporeStarPerson extends Animal implements GeoEntity {
     public boolean isElder() {
         return isElder;
     }
+    
+    /**
+     * 设置是否是族长者
+     */
+    public void setElder(boolean isElder) {
+        this.isElder = isElder;
+    }
 
     /**
      * 触发攻击动画
@@ -272,4 +293,6 @@ public class SporeStarPerson extends Animal implements GeoEntity {
                 .add(Attributes.ATTACK_DAMAGE, 4.0D)     // 攻击伤害
                 .add(Attributes.FOLLOW_RANGE, 16.0D).build();    // 跟随范围
     }
+
+    // 掉落物通过JSON战利品表定义
 }

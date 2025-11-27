@@ -15,13 +15,16 @@
   "item.ghostly_ufo_descent.ghostly_scroll": "鬼怪卷轴",
   "item.ghostly_ufo_descent.ufo_l": "飞碟灯",
 
-  "ghostly_ufo_descent.configuration.title": "Ghostly UFO Descent Configs",
-  "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml": "Ghostly UFO Descent Configs",
-  "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml.title": "Ghostly UFO Descent Configs",
-  "ghostly_ufo_descent.configuration.items": "Item List",
-  "ghostly_ufo_descent.configuration.logDirtBlock": "Log Dirt Block",
-  "ghostly_ufo_descent.configuration.magicNumberIntroduction": "Magic Number Text",
-  "ghostly_ufo_descent.configuration.magicNumber": "Magic Number",
+  "ghostly_ufo_descent.configuration.title": "异星鬼怪之路配置",
+  "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml": "异星鬼怪之路配置",
+  "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml.title": "异星鬼怪之路配置",
+  "ghostly_ufo_descent.configuration.meteorSpawnDay": "陨石降临天数",
+  "ghostly_ufo_descent.configuration.meteorChance": "陨石生成概率",
+  "ghostly_ufo_descent.configuration.meteorCheckInterval": "陨石检查间隔",
+  "ghostly_ufo_descent.configuration.meteorSpawnDay.tooltip": "设置陨石开始生成所需的游戏天数",
+  "ghostly_ufo_descent.configuration.meteorChance.tooltip": "设置陨石生成的概率（0.0到1.0之间）",
+  "ghostly_ufo_descent.configuration.meteorCheckInterval.tooltip": "设置陨石生成检查的间隔时间（以刻为单位）",
+  
 
   "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "你只能在晚上使用异星石棺。",
   "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "附近有怪物, 这使得你无法平静地入眠。",
@@ -56,5 +59,10 @@
   "advancement.ghostly_ufo_descent.meteor_impact.title": "天外来客",
   "advancement.ghostly_ufo_descent.meteor_impact.description": "目睹流星撞击并发现外星秘密",
   "advancement.ghostly_ufo_descent.ghostly_scroll_use.title": "鬼怪之力",
-  "advancement.ghostly_ufo_descent.ghostly_scroll_use.description": "驾驭鬼怪卷轴的强大力量"
+  "advancement.ghostly_ufo_descent.ghostly_scroll_use.description": "驾驭鬼怪卷轴的强大力量",
+
+  "entity.ghostly_ufo_descent.spore_star_person.elder.greeting": "族长者: 欢迎，来自远方的旅行者。我们是孢子星人，来自遥远的星空。",
+  "entity.ghostly_ufo_descent.spore_star_person.elder.nether_star": "族长者: 你持有下界之星，这是强大的能量结晶。你想要与我们交易吗？",
+  "entity.ghostly_ufo_descent.spore_star_person.elder.no_nether_star": "族长者: 如果你想要获得我们的帮助，请带来下界之星作为信物。",
+  "entity.ghostly_ufo_descent.spore_star_person.normal.sound": "孢子星人: ... (它发出了奇怪的声音)"
 }

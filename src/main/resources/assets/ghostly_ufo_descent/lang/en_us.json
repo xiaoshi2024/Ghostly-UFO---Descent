@@ -18,10 +18,13 @@
   "ghostly_ufo_descent.configuration.title": "Ghostly UFO Descent Configs",
   "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml": "Ghostly UFO Descent Configs",
   "ghostly_ufo_descent.configuration.section.ghostly_ufo_descent.common.toml.title": "Ghostly UFO Descent Configs",
-  "ghostly_ufo_descent.configuration.items": "Item List",
-  "ghostly_ufo_descent.configuration.logDirtBlock": "Log Dirt Block",
-  "ghostly_ufo_descent.configuration.magicNumberIntroduction": "Magic Number Text",
-  "ghostly_ufo_descent.configuration.magicNumber": "Magic Number",
+  "ghostly_ufo_descent.configuration.meteorSpawnDay": "Meteor Spawn Day",
+  "ghostly_ufo_descent.configuration.meteorChance": "Meteor Spawn Chance",
+  "ghostly_ufo_descent.configuration.meteorCheckInterval": "Meteor Check Interval",
+  "ghostly_ufo_descent.configuration.meteorSpawnDay.tooltip": "Set the number of days before meteors can start spawning",
+  "ghostly_ufo_descent.configuration.meteorChance.tooltip": "Set the chance of a meteor spawning (between 0.0 and 1.0)",
+  "ghostly_ufo_descent.configuration.meteorCheckInterval.tooltip": "Set the interval (in ticks) between meteor spawn checks",
+  
   "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "You can only use the alien sarcophagus at night.",
   "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "There are monsters nearby, which prevents you from sleeping peacefully.",
   "block.ghostly_ufo_descent.sarcophagus.entered_dream": "You have entered the dream world.",
@@ -55,5 +58,10 @@
   "advancement.ghostly_ufo_descent.meteor_impact.title": "Celestial Visitor",
   "advancement.ghostly_ufo_descent.meteor_impact.description": "Witness a meteor impact and discover alien secrets",
   "advancement.ghostly_ufo_descent.ghostly_scroll_use.title": "Ghostly Power",
-  "advancement.ghostly_ufo_descent.ghostly_scroll_use.description": "Harness the power of the Ghostly Scroll"
+  "advancement.ghostly_ufo_descent.ghostly_scroll_use.description": "Harness the power of the Ghostly Scroll",
+
+  "entity.ghostly_ufo_descent.spore_star_person.elder.greeting": "Elder: Welcome, traveler from afar. We are Spore Star People, from distant stars.",
+  "entity.ghostly_ufo_descent.spore_star_person.elder.nether_star": "Elder: You hold a Nether Star, a powerful energy crystal. Would you like to trade with us?",
+  "entity.ghostly_ufo_descent.spore_star_person.elder.no_nether_star": "Elder: If you seek our help, please bring a Nether Star as a token.",
+  "entity.ghostly_ufo_descent.spore_star_person.normal.sound": "Spore Star Person: ... (It makes strange sounds)"
 }
