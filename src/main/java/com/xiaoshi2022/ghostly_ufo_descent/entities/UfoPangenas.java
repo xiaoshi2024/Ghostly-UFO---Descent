@@ -1,12 +1,12 @@
 package com.xiaoshi2022.ghostly_ufo_descent.entities;
 
 import com.mojang.logging.LogUtils;
+import com.xiaoshi2022.ghostly_ufo_descent.registry.SoundRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FollowMobGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
@@ -24,7 +24,6 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import com.xiaoshi2022.ghostly_ufo_descent.registry.SoundRegistry;
 
 /**
  * 极噬者UFO实体类

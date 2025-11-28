@@ -1,6 +1,9 @@
 package com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity;
 
 import com.mojang.authlib.GameProfile;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.layer.SpiritPossessorEyesFeatureRenderer;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.state.SpiritPossessorEntityRenderState;
+import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -9,7 +12,6 @@ import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.entity.AbstractZombieRenderer;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.PlayerSkin;
 import net.minecraft.world.item.component.ResolvableProfile;
@@ -22,10 +24,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.layer.SpiritPossessorEyesFeatureRenderer;
-import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.state.SpiritPossessorEntityRenderState;
-import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 
 public class SpiritPossessorRenderer extends AbstractZombieRenderer<SpiritPossessor, SpiritPossessorEntityRenderState, ZombieModel<SpiritPossessorEntityRenderState>> {
 

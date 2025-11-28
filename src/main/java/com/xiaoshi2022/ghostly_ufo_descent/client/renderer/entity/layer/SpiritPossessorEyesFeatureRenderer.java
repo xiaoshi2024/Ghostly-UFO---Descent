@@ -1,13 +1,13 @@
 package com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.state.SpiritPossessorEntityRenderState;
 import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
-import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.state.SpiritPossessorEntityRenderState;
 
 public class SpiritPossessorEyesFeatureRenderer extends RenderLayer<SpiritPossessorEntityRenderState, ZombieModel<SpiritPossessorEntityRenderState>> {
     // 使用统一的眼睛纹理

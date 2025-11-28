@@ -1,19 +1,19 @@
 package com.xiaoshi2022.ghostly_ufo_descent.meteor.event;
 
-import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
-import com.xiaoshi2022.ghostly_ufo_descent.meteor.entity.EntityMeteor;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
+import com.xiaoshi2022.ghostly_ufo_descent.meteor.entity.EntityMeteor;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.bus.api.SubscribeEvent;
 
 @EventBusSubscriber(modid = GhostlyUFODescent.MODID)
 public class MeteorTestHandler {

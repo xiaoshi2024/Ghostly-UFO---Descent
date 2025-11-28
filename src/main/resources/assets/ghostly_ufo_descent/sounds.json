@@ -7,5 +7,14 @@
         "stream": false
       }
     ]
+  },
+  "spore_man": {
+    "subtitle": "spore~~",
+    "sounds": [
+      {
+        "name": "ghostly_ufo_descent:spore_man",
+        "stream": false
+      }
+    ]
   }
 }

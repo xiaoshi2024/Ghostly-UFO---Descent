@@ -4,8 +4,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-import java.util.List;
-
 //配置类，用于管理模组的所有配置项
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -42,6 +40,15 @@ public class Config {
     public static final ModConfigSpec.IntValue METEOR_CHECK_INTERVAL = BUILDER
             .comment("The interval (in ticks) between meteor spawn checks")
             .defineInRange("meteorCheckInterval", 20 * 30, 20, 20 * 60 * 60);
+    
+    // 鬼怪玩家特征配置项
+    public static final ModConfigSpec.BooleanValue ENABLE_GHOSTLY_PLAYER_FEATURES = BUILDER
+            .comment("Enable ghostly features (like glowing eyes) for players")
+            .define("enableGhostlyPlayerFeatures", true);
+    
+    public static final ModConfigSpec.DoubleValue GHOSTLY_FEATURES_CHANCE = BUILDER
+            .comment("The chance of a player showing ghostly features (0.0 to 1.0)")
+            .defineInRange("ghostlyFeaturesChance", 1.0, 0.0, 1.0);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 
