@@ -15,10 +15,21 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import com.xiaoshi2022.ghostly_ufo_descent.Config;
+import java.util.Random;
 
 public class HornsRenderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
-    private static final ResourceLocation HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns.png");
+    // 默认角贴图位置
+    private static final ResourceLocation DEFAULT_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns.png");
+    // 不同颜色的角贴图位置
+    private static final ResourceLocation RED_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_red.png");
+    private static final ResourceLocation BLUE_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_blue.png");
+    private static final ResourceLocation GREEN_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_green.png");
+    private static final ResourceLocation PURPLE_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_purple.png");
+    private static final ResourceLocation GOLD_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_gold.png");
+    
     private final ModelPart horns;
+    private final Random random = new Random();
 
     public HornsRenderLayer(AvatarRenderer<AbstractClientPlayer> playerRenderer, EntityModelSet entityModels) {
         super(playerRenderer);
@@ -33,8 +44,8 @@ public class HornsRenderLayer extends RenderLayer<AvatarRenderState, PlayerModel
         PartDefinition hornsRoot = partdefinition.addOrReplaceChild("horns", CubeListBuilder.create(),
                 PartPose.offset(0.0f, -8.0f, -4.0f)); // 调整到头部前方
 
-        // 调整角的间距 - 根据需要选择合适的大小
-        float hornSpacing = 2.1f; // 可以尝试不同的值
+        // 从配置中获取角间距
+        float hornSpacing = (float) Config.HORNS_SPACING.get().doubleValue();
 
         // 左角 - 放在左边（负偏移）
         hornsRoot.addOrReplaceChild("left_horn_base", CubeListBuilder.create()
@@ -95,7 +106,9 @@ public class HornsRenderLayer extends RenderLayer<AvatarRenderState, PlayerModel
             // poseStack.mulPose(Vector3f.XP.rotationDegrees(-10.0F)); // 稍微向前倾斜
         }
 
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(HORNS_TEXTURE));
+        // 根据配置获取当前选择的角贴图
+        ResourceLocation currentHornsTexture = getCurrentHornsTexture();
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(currentHornsTexture));
         horns.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
 
         poseStack.popPose();
@@ -116,6 +129,39 @@ public class HornsRenderLayer extends RenderLayer<AvatarRenderState, PlayerModel
     }
 
     private boolean shouldRender(AvatarRenderState renderState) {
-        return true;
+        // 检查是否启用了角渲染功能
+        if (!Config.ENABLE_HORNS_RENDER.get()) {
+            return false;
+        }
+        
+        // 检查是否启用了鬼怪玩家特征（作为总开关）
+        if (!Config.ENABLE_GHOSTLY_PLAYER_FEATURES.get()) {
+            return false;
+        }
+        
+        // 根据配置的概率决定是否渲染角
+        return random.nextDouble() < Config.HORNS_RENDER_CHANCE.get();
+    }
+    
+    /**
+     * 根据配置获取当前选择的角贴图资源位置
+     */
+    private ResourceLocation getCurrentHornsTexture() {
+        String color = Config.HORNS_COLOR.get().toLowerCase();
+        switch (color) {
+            case "red":
+                return RED_HORNS_TEXTURE;
+            case "blue":
+                return BLUE_HORNS_TEXTURE;
+            case "green":
+                return GREEN_HORNS_TEXTURE;
+            case "purple":
+                return PURPLE_HORNS_TEXTURE;
+            case "gold":
+                return GOLD_HORNS_TEXTURE;
+            case "default":
+            default:
+                return DEFAULT_HORNS_TEXTURE;
+        }
     }
 }

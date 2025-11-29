@@ -24,6 +24,18 @@
   "ghostly_ufo_descent.configuration.meteorSpawnDay.tooltip": "设置陨石开始生成所需的游戏天数",
   "ghostly_ufo_descent.configuration.meteorChance.tooltip": "设置陨石生成的概率（0.0到1.0之间）",
   "ghostly_ufo_descent.configuration.meteorCheckInterval.tooltip": "设置陨石生成检查的间隔时间（以刻为单位）",
+  "ghostly_ufo_descent.configuration.enableGhostlyPlayerFeatures": "启用鬼怪玩家特征",
+  "ghostly_ufo_descent.configuration.ghostlyFeaturesChance": "鬼怪特征出现概率",
+  "ghostly_ufo_descent.configuration.enableGhostlyPlayerFeatures.tooltip": "启用或禁用鬼怪玩家特征",
+  "ghostly_ufo_descent.configuration.ghostlyFeaturesChance.tooltip": "设置鬼怪特征出现的概率（0.0到1.0之间）",
+  "ghostly_ufo_descent.configuration.enableHornsRender": "启用角渲染层",
+  "ghostly_ufo_descent.configuration.hornsRenderChance": "角渲染概率",
+  "ghostly_ufo_descent.configuration.hornsSpacing": "角间距",
+  "ghostly_ufo_descent.configuration.hornsColor": "角颜色",
+  "ghostly_ufo_descent.configuration.enableHornsRender.tooltip": "启用或禁用角渲染层",
+  "ghostly_ufo_descent.configuration.hornsRenderChance.tooltip": "设置角渲染的概率（0.0到1.0之间）",
+  "ghostly_ufo_descent.configuration.hornsSpacing.tooltip": "设置角之间的间距（0.5到5.0之间）",
+  "ghostly_ufo_descent.configuration.hornsColor.tooltip": "设置角的颜色（default, red, blue, green, purple, gold）",
   
 
   "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "你只能在晚上使用异星石棺。",

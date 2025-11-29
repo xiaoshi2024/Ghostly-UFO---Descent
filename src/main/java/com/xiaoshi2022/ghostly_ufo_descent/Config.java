@@ -49,6 +49,23 @@ public class Config {
     public static final ModConfigSpec.DoubleValue GHOSTLY_FEATURES_CHANCE = BUILDER
             .comment("The chance of a player showing ghostly features (0.0 to 1.0)")
             .defineInRange("ghostlyFeaturesChance", 1.0, 0.0, 1.0);
+    
+    // 角渲染层配置项
+    public static final ModConfigSpec.BooleanValue ENABLE_HORNS_RENDER = BUILDER
+            .comment("Enable horns rendering for players")
+            .define("enableHornsRender", true);
+    
+    public static final ModConfigSpec.DoubleValue HORNS_RENDER_CHANCE = BUILDER
+            .comment("The chance of a player showing horns (0.0 to 1.0)")
+            .defineInRange("hornsRenderChance", 1.0, 0.0, 1.0);
+    
+    public static final ModConfigSpec.DoubleValue HORNS_SPACING = BUILDER
+            .comment("The spacing between horns (adjusts how far apart they are)")
+            .defineInRange("hornsSpacing", 2.1, 0.5, 5.0);
+    
+    public static final ModConfigSpec.ConfigValue<String> HORNS_COLOR = BUILDER
+            .comment("The color of the horns. Available options: default, red, blue, green, purple, gold")
+            .define("hornsColor", "default");
 
     static final ModConfigSpec SPEC = BUILDER.build();
 
