@@ -15,7 +15,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public final class EntityRegistry {
-	public static void init() {}
+
+    public static void init() {}
 
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
 			DeferredRegister.create(Registries.ENTITY_TYPE, "ghostly_ufo_descent");
@@ -63,5 +64,4 @@ public final class EntityRegistry {
 					.clientTrackingRange(8)
 					.build(ResourceKey.create(Registries.ENTITY_TYPE,
 							ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "meteor"))));
-
 }

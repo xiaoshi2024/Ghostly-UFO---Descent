@@ -1,12 +1,10 @@
 package com.xiaoshi2022.ghostly_ufo_descent;
 
+import com.xiaoshi2022.ghostly_ufo_descent.client.model.layer.HornsRenderLayer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.GhostlySarcophagusRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.PhagenaCropRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.block.UfoL_blockentityRenderer;
-import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.EntityMeteorRenderer;
-import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.SpiritPossessorRenderer;
-import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.SporeStarPersonRenerer;
-import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.UfoPangenasRenderer;
+import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.*;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SporeStarPerson;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.UfoPangenas;
@@ -14,7 +12,10 @@ import com.xiaoshi2022.ghostly_ufo_descent.entities.playerbodys.CorpseRenderer;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.BlockEntityRegistry;
 import com.xiaoshi2022.ghostly_ufo_descent.registry.EntityRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.world.entity.player.PlayerModelType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -75,5 +76,19 @@ public class GhostlyUFODescentClient {
                 UfoL_blockentityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.PHAGENA_CROP.get(),
                 PhagenaCropRenderer::new);
+    }
+
+    @SubscribeEvent // 只有在物理客户端的 MOD 事件总线上
+    public static void addPlayerLayers(EntityRenderersEvent.AddLayers event) {
+        // 对所有可能的玩家模型进行迭代.
+        for (PlayerModelType type : event.getSkins()) {
+            // 获取相关的AvatarRenderer.
+            AvatarRenderer<AbstractClientPlayer> playerRenderer = event.getPlayerRenderer(type);
+            if (playerRenderer != null) {
+//                把图层添加到渲染器中
+//                有合适的通用代码来支持玩家和玩家渲染器。
+                playerRenderer.addLayer(new HornsRenderLayer(playerRenderer, event.getEntityModels()));
+            }
+        }
     }
 }
