@@ -484,25 +484,8 @@ public class CorpseEntity extends CorpseBoundingBoxBase {
             }
         }
 
-        // 3. 归还盔甲栏（36-39槽位）- 这部分通常由装备处理覆盖，但这里作为备份
-        if (armorInventory != null) {
-            for (int i = 0; i < armorInventory.size(); i++) {
-                ItemStack armorItem = armorInventory.get(i);
-                if (!armorItem.isEmpty()) {
-                    EquipmentSlot slot = getArmorSlotForIndex(i);
-                    if (slot != null) {
-                        ItemStack currentArmor = player.getItemBySlot(slot);
-                        if (currentArmor.isEmpty()) {
-                            player.setItemSlot(slot, armorItem);
-                        } else {
-                            if (!player.addItem(armorItem)) {
-                                Containers.dropItemStack(level(), player.getX(), player.getY(), player.getZ(), armorItem);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        // 3. 盔甲栏已经通过装备槽位归还，不需要重复处理
+        // armorInventory 已被 getEquipment() 覆盖，无需单独处理
 
         // 4. 归还副手物品
         if (offHandInventory != null && !offHandInventory.isEmpty()) {

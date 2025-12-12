@@ -40,6 +40,7 @@
   
 
   "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "你只能在晚上使用异星石棺。",
+  "block.ghostly_ufo_descent.sarcophagus.must_be_empty_handed": "你必须空手才能使用这个石棺。",
   "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "附近有怪物, 这使得你无法平静地入眠。",
   "block.ghostly_ufo_descent.sarcophagus.entered_dream": "你已进入梦境世界。",
   "block.ghostly_ufo_descent.sarcophagus.dimension_not_found": "梦境维度未找到。",

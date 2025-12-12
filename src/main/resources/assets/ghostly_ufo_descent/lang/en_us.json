@@ -39,6 +39,7 @@
   "ghostly_ufo_descent.configuration.hornsColor.tooltip": "Set the color of the horns (default, red, blue, green, purple, gold)",
   
   "block.ghostly_ufo_descent.sarcophagus.cant_sleep_day": "You can only use the alien sarcophagus at night.",
+  "block.ghostly_ufo_descent.sarcophagus.must_be_empty_handed": "You must be empty-handed to use this sarcophagus.",
   "block.ghostly_ufo_descent.sarcophagus.monsters_nearby": "There are monsters nearby, which prevents you from sleeping peacefully.",
   "block.ghostly_ufo_descent.sarcophagus.entered_dream": "You have entered the dream world.",
   "block.ghostly_ufo_descent.sarcophagus.dimension_not_found": "Dream dimension not found.",

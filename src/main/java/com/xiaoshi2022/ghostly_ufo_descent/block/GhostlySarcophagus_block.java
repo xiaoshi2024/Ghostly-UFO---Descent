@@ -61,6 +61,15 @@ public class GhostlySarcophagus_block extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
 
+        // 检查玩家的主手和副手是否都为空手
+        if (!player.getMainHandItem().isEmpty() || !player.getOffhandItem().isEmpty()) {
+            // 非空手时不能使用
+            if (player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.sendSystemMessage(Component.translatable("block.ghostly_ufo_descent.sarcophagus.must_be_empty_handed"));
+            }
+            return InteractionResult.FAIL;
+        }
+
         // 检查是否是晚上（0-13000是白天，13000-24000是晚上）
         long dayTime = level.getDayTime() % 24000;
         if (dayTime >= 0 && dayTime < 13000) {
