@@ -1,7 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -16,9 +16,9 @@ public final class SoundRegistry {
 
 
 	public static Supplier<SoundEvent> UFO_P = SOUND_EVENT.register("ufo_p",
-			() -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MODID, "ufo_p")));
+			() -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MODID, "ufo_p")));
 
 	public static Supplier<SoundEvent> SPORE_MAN = SOUND_EVENT.register("spore_man",
-			() -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MODID, "spore_man")));
+			() -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MODID, "spore_man")));
 
 }

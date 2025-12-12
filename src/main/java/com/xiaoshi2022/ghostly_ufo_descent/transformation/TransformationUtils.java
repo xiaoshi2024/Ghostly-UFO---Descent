@@ -4,7 +4,7 @@ import com.xiaoshi2022.ghostly_ufo_descent.api.codec.CodecUtils;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -71,7 +71,7 @@ public class TransformationUtils {
         if (spiritPossessor.getPersistentData().contains("original_block")) {
             spiritPossessor.getPersistentData().getString("original_block").ifPresent(originalBlockId -> {
                 // 尝试获取方块实例
-                ResourceLocation blockRL = ResourceLocation.tryParse(originalBlockId);
+                Identifier blockRL = Identifier.tryParse(originalBlockId);
                 if (blockRL != null) {
                     BuiltInRegistries.BLOCK.get(blockRL).ifPresent(blockHolder -> {
                         Block block = blockHolder.value();

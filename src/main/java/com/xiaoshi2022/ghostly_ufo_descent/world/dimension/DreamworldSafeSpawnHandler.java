@@ -2,7 +2,8 @@ package com.xiaoshi2022.ghostly_ufo_descent.world.dimension;
 
 import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,12 +14,13 @@ import net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent;
 @EventBusSubscriber(modid = GhostlyUFODescent.MODID)
 public class DreamworldSafeSpawnHandler {
 
-    private static final ResourceLocation DREAM_WORLD = ResourceLocation.parse("ghostly_ufo_descent:dream_world");
+    public static final Identifier DREAM_WORLD = Identifier.parse("ghostly_ufo_descent:dream_world");
 
     @SubscribeEvent
     public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event) {
         Entity entity = event.getEntity();
-        ResourceLocation dimension = event.getDimension().location();
+        ResourceKey<Level> dimensionKey = event.getDimension();
+        Identifier dimension = dimensionKey.identifier();
 
         if (dimension.equals(DREAM_WORLD)) {
             // 确保实体生成在安全位置

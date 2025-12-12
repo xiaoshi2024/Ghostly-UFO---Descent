@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.UUID;
 
@@ -73,7 +73,7 @@ public class CorpseRenderer extends EntityRenderer<CorpseEntity, CorpseRenderSta
         int eyeColorIndex = state.soulEyeColor.map(value -> Math.max(0, Math.min(6, (int) value))).orElse(0); // 确保索引在0-6范围内，如果不存在则使用默认值0
         
         // 构建眼睛纹理资源路径
-        ResourceLocation eyeTexture = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "entity/soul_eyes_" + eyeColorIndex);
+        Identifier eyeTexture = Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "entity/soul_eyes_" + eyeColorIndex);
         
         // 设置眼睛覆盖层的变换（基于玩家模型的眼睛位置）
         stack.pushPose();

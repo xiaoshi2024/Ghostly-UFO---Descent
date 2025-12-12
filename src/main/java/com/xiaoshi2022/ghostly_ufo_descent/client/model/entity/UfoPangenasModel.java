@@ -1,7 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent.client.model.entity;
 
 import com.xiaoshi2022.ghostly_ufo_descent.entities.UfoPangenas;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 import static com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent.MODID;
@@ -13,7 +13,7 @@ import static com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent.MODID;
 public class UfoPangenasModel extends DefaultedEntityGeoModel<UfoPangenas> {
 
     public UfoPangenasModel() {
-        super(ResourceLocation.fromNamespaceAndPath(MODID, "ufo_pangenas"));
+        super(Identifier.fromNamespaceAndPath(MODID, "ufo_pangenas"));
     }
 
 }

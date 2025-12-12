@@ -1,6 +1,7 @@
 package com.xiaoshi2022.ghostly_ufo_descent.registry;
 
 import com.xiaoshi2022.ghostly_ufo_descent.item.GhostlyScroll;
+import com.xiaoshi2022.ghostly_ufo_descent.item.PeachWoodSword;
 import com.xiaoshi2022.ghostly_ufo_descent.item.PhaganSeeds;
 import net.minecraft.world.item.BlockItem;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -26,8 +27,10 @@ public final class ItemRegistry {
 
 	public static final DeferredItem<BlockItem> UFO_L_ITEM = ITEMS.registerSimpleBlockItem("ufo_l", UFO_L_BLOCK);
 
+// 注册桃木剑
+	public static final Supplier<PeachWoodSword> PEACH_WOOD_SWORD = ITEMS.registerItem("peach_wood_sword", PeachWoodSword::new);
 
-	public static void init() {
-	}
+public static void init() {
+}
 
 }

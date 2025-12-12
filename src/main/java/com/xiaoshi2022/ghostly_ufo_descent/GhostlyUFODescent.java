@@ -66,6 +66,7 @@ public class GhostlyUFODescent {
                 output.accept(PHAGAN_SEEDS.get());
                 output.accept(GHOSTLY_SARCOPHAGUS_ITEM.get());
                 output.accept(UFO_L_ITEM.get());
+                output.accept(PEACH_WOOD_SWORD.get());
             }).build());
 
     // mod 类的构造函数是加载 mod 时运行的第一个代码。

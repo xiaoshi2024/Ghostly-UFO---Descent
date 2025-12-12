@@ -35,6 +35,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
+import static com.xiaoshi2022.ghostly_ufo_descent.world.dimension.DreamworldSafeSpawnHandler.DREAM_WORLD;
+
 public class UfoL_block extends BaseEntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -72,7 +74,11 @@ public class UfoL_block extends BaseEntityBlock {
 
             if (soulState) {
                 // 检查玩家是否在Dreamworld维度
-                boolean isInDreamWorld = serverPlayer.level().dimension().location().toString().equals("ghostly_ufo_descent:dream_world");
+                ResourceKey<Level> dreamKey = ResourceKey.create(
+                        net.minecraft.core.registries.Registries.DIMENSION,
+                        DREAM_WORLD
+                );
+                boolean isInDreamWorld = serverPlayer.level().dimension() == dreamKey;
 
                 if (isInDreamWorld) {
                     // 从玩家的持久化数据中获取传送回主世界的位置

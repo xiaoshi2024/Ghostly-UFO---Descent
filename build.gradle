@@ -136,7 +136,7 @@ configurations {
 
 dependencies {
 
-    implementation "curse.maven:geckolib-388172:7164579"
+    implementation "curse.maven:geckolib-388172:7315741"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

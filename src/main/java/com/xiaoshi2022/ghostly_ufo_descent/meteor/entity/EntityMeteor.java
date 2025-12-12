@@ -10,7 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -31,9 +31,9 @@ import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animatable.processing.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Optional;
@@ -344,7 +344,7 @@ public class EntityMeteor extends Entity implements GeoEntity {
                             GhostlyUFODescent.LOGGER.info("Attempting to spawn sarcophagus block during crater generation at: {}", pos);
                             
                             // 使用注册表API获取方块
-                            ResourceLocation blockRL = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "ghostly_sarcophagus_block");
+                            Identifier blockRL = Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "ghostly_sarcophagus_block");
                             GhostlyUFODescent.LOGGER.info("Looking up block registry: {}", blockRL);
                             Optional<net.minecraft.world.level.block.Block> sarcophagusBlockOpt = BuiltInRegistries.BLOCK.getOptional(blockRL);
 

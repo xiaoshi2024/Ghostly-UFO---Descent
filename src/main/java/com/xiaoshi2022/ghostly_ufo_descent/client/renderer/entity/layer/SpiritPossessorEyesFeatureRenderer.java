@@ -3,15 +3,15 @@ package com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.xiaoshi2022.ghostly_ufo_descent.GhostlyUFODescent;
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.state.SpiritPossessorEntityRenderState;
-import net.minecraft.client.model.ZombieModel;
+import net.minecraft.client.model.monster.zombie.ZombieModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class SpiritPossessorEyesFeatureRenderer extends RenderLayer<SpiritPossessorEntityRenderState, ZombieModel<SpiritPossessorEntityRenderState>> {
     // 使用统一的眼睛纹理
-    private static final ResourceLocation EYES_TEXTURE = ResourceLocation.fromNamespaceAndPath(GhostlyUFODescent.MODID, "textures/entity/spirit_possessor_eyes.png");
+    private static final Identifier EYES_TEXTURE = Identifier.fromNamespaceAndPath(GhostlyUFODescent.MODID, "textures/entity/spirit_possessor_eyes.png");
 
     public SpiritPossessorEyesFeatureRenderer(RenderLayerParent<SpiritPossessorEntityRenderState, ZombieModel<SpiritPossessorEntityRenderState>> featureRendererContext) {
         super(featureRendererContext);

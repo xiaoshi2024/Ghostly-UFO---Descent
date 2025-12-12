@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -29,7 +29,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -292,7 +292,7 @@ public class SpiritPossessor extends Zombie {
                                 // 获取原方块的注册表名称
                                 this.getPersistentData().getString("original_block").ifPresent(originalBlockId -> {
                                     // 使用注册表名称获取方块实例
-                                    ResourceLocation blockRL = ResourceLocation.tryParse(originalBlockId);
+                                    Identifier blockRL = Identifier.tryParse(originalBlockId);
                                     if (blockRL != null) {
                                         // 安全获取方块
                                         BuiltInRegistries.BLOCK.get(blockRL).ifPresent(blockHolder -> {

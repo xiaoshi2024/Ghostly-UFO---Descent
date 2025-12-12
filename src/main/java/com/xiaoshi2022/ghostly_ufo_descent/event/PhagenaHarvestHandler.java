@@ -48,7 +48,7 @@ public class PhagenaHarvestHandler {
                     level.removeBlock(pos, false);
                     
                     // 从跟踪集合中移除
-                    String levelId = level.dimension().location().toString();
+                    String levelId = level.dimension().toString();
                     if (MATURE_CROPS.containsKey(levelId)) {
                         MATURE_CROPS.get(levelId).remove(pos);
                     }
@@ -97,7 +97,7 @@ public class PhagenaHarvestHandler {
         
         // 检查是否是成熟的极噬种子
         if (state.getBlock() instanceof Phagenabotanys crop && state.getValue(crop.getAgeProperty()) >= crop.getMaxAge()) {
-            String levelId = level.dimension().location().toString();
+            String levelId = level.dimension().toString();
             MATURE_CROPS.computeIfAbsent(levelId, k -> new HashSet<>()).add(pos);
         }
     }
@@ -110,7 +110,7 @@ public class PhagenaHarvestHandler {
         Level level = (Level) event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = level.getBlockState(pos);
-        String levelId = level.dimension().location().toString();
+        String levelId = level.dimension().toString();
         
         // 检查是否是成熟的极噬种子
         if (state.getBlock() instanceof Phagenabotanys crop && state.getValue(crop.getAgeProperty()) >= crop.getMaxAge()) {
@@ -131,7 +131,7 @@ public class PhagenaHarvestHandler {
         Level level = event.getLevel();
         if (level.isClientSide()) return;
         
-        String levelId = level.dimension().location().toString();
+        String levelId = level.dimension().toString();
         
         // 每20个tick（1秒）检查一次
         if (level.getGameTime() % CHECK_INTERVAL == 0) {

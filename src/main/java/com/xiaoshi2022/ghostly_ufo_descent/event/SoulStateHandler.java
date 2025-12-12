@@ -64,7 +64,7 @@ public class SoulStateHandler {
         if (event.getEntity() instanceof ServerPlayer) {
             ServerPlayer player = (ServerPlayer) event.getEntity();
             // 检查玩家是否在梦境世界并且处于灵魂状态
-            boolean isInDreamWorld = player.level().dimension().location().toString().equals("ghostly_ufo_descent:dream_world");
+            boolean isInDreamWorld = player.level().dimension().toString().equals("ghostly_ufo_descent:dream_world");
             boolean isInSoulState = player.getPersistentData().getBoolean("soul_state").orElse(false);
             
             if (isInDreamWorld && isInSoulState) {
@@ -142,7 +142,7 @@ public class SoulStateHandler {
      */
     private static void updateSoulVisibility(ServerPlayer player) {
         // 检查玩家是否在Dreamworld维度
-        boolean isInDreamWorld = player.level().dimension().location().toString().equals("ghostly_ufo_descent:dream_world");
+        boolean isInDreamWorld = player.level().dimension().toString().equals("ghostly_ufo_descent:dream_world");
         
         if (isInDreamWorld) {
             // 在深梦维度中，灵魂状态可见且可受到伤害

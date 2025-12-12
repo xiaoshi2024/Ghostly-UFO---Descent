@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -117,7 +117,7 @@ public class GhostlySarcophagus_block extends BaseEntityBlock {
             try {
                 // 获取Dreamworld维度
                 ResourceKey<Level> dreamWorldKey = ResourceKey.create(Registries.DIMENSION,
-                        ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "dream_world"));
+                        Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "dream_world"));
 
                 // 使用 getServer() 方法而不是直接访问 server 字段
                 ServerLevel dreamLevel = serverPlayer.level().getServer().getLevel(dreamWorldKey);

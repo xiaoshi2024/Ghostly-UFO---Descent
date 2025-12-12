@@ -2,31 +2,35 @@ package com.xiaoshi2022.ghostly_ufo_descent.client.model.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.PlayerModel;
+import com.xiaoshi2022.ghostly_ufo_descent.Config;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import com.xiaoshi2022.ghostly_ufo_descent.Config;
+import net.minecraft.resources.Identifier;
+
 import java.util.Random;
 
 public class HornsRenderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     // 默认角贴图位置
-    private static final ResourceLocation DEFAULT_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns.png");
+    private static final Identifier DEFAULT_HORNS_TEXTURE = Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns.png");
     // 不同颜色的角贴图位置
-    private static final ResourceLocation RED_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_red.png");
-    private static final ResourceLocation BLUE_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_blue.png");
-    private static final ResourceLocation GREEN_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_green.png");
-    private static final ResourceLocation PURPLE_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_purple.png");
-    private static final ResourceLocation GOLD_HORNS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_gold.png");
+    private static final Identifier RED_HORNS_TEXTURE = Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_red.png");
+    private static final Identifier BLUE_HORNS_TEXTURE = Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_blue.png");
+    private static final Identifier GREEN_HORNS_TEXTURE = Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_green.png");
+    private static final Identifier PURPLE_HORNS_TEXTURE = Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_purple.png");
+    private static final Identifier GOLD_HORNS_TEXTURE = Identifier.fromNamespaceAndPath("ghostly_ufo_descent", "textures/entity/horns_gold.png");
     
     private final ModelPart horns;
     private final Random random = new Random();
@@ -107,8 +111,8 @@ public class HornsRenderLayer extends RenderLayer<AvatarRenderState, PlayerModel
         }
 
         // 根据配置获取当前选择的角贴图
-        ResourceLocation currentHornsTexture = getCurrentHornsTexture();
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(currentHornsTexture));
+        Identifier currentHornsTexture = getCurrentHornsTexture();
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderTypes.entityCutoutNoCull(currentHornsTexture));
         horns.render(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
 
         poseStack.popPose();
@@ -146,7 +150,7 @@ public class HornsRenderLayer extends RenderLayer<AvatarRenderState, PlayerModel
     /**
      * 根据配置获取当前选择的角贴图资源位置
      */
-    private ResourceLocation getCurrentHornsTexture() {
+    private Identifier getCurrentHornsTexture() {
         String color = Config.HORNS_COLOR.get().toLowerCase();
         switch (color) {
             case "red":

@@ -10,6 +10,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permission;
+import net.minecraft.server.permissions.PermissionLevel;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -25,7 +27,9 @@ public class MeteorTestHandler {
         
         // 创建 /testmeteor 指令
         dispatcher.register(Commands.literal("testmeteor")
-                .requires(source -> source.hasPermission(2)) // 需要管理员权限
+                .requires(source -> source.permissions().hasPermission(
+                        new Permission.HasCommandLevel(PermissionLevel.OWNERS)
+                )) // 需要管理员权限
                 .executes(MeteorTestHandler::spawnTestMeteor)
                 .then(Commands.argument("size", IntegerArgumentType.integer(1, 3)) // 添加可选的大小参数
                         .executes(context -> spawnTestMeteorWithSize(context, IntegerArgumentType.getInteger(context, "size"))))

@@ -461,5 +461,38 @@
         ]
       }
     }
+  },
+  "effects": {
+    "type": "minecraft:overworld",
+    "sky_color": 7918847,
+    "fog_color": 13224335,
+    "water_color": 4304318,
+    "water_fog_color": 329011,
+    "has_foliage_color": true,
+    "foliage_color": 7918847,
+    "has_grass_color": true,
+    "grass_color": 7918847,
+    "grass_color_modifier": "none",
+    "has_sky_light": true,
+    "has_ceiling": false,
+    "ultrawarm": false,
+    "natural": true,
+    "coordinate_scale": 1.0,
+    "ambient_light": 0.5,
+    "fixed_time": null,
+    "bed_works": true,
+    "respawn_anchor_works": false,
+    "has_raids": true,
+    "logical_height": 384,
+    "min_y": -64,
+    "height": 384,
+    "infiniburn": "#minecraft:infiniburn_overworld",
+    "piglin_safe": false,
+    "monster_spawn_light_level": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 0,
+      "max_inclusive": 7
+    },
+    "monster_spawn_block_light_limit": 0
   }
 }

@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "ghostly_ufo_descent:item/peach_wood_sword",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
+  }
+}

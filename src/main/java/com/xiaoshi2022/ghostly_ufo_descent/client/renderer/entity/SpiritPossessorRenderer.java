@@ -5,14 +5,14 @@ import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.layer.SpiritPo
 import com.xiaoshi2022.ghostly_ufo_descent.client.renderer.entity.state.SpiritPossessorEntityRenderState;
 import com.xiaoshi2022.ghostly_ufo_descent.entities.SpiritPossessor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.monster.zombie.ZombieModel;
 import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.entity.AbstractZombieRenderer;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.PlayerSkin;
 import net.minecraft.world.item.component.ResolvableProfile;
 import org.jetbrains.annotations.NotNull;
@@ -27,11 +27,11 @@ import java.util.concurrent.TimeoutException;
 
 public class SpiritPossessorRenderer extends AbstractZombieRenderer<SpiritPossessor, SpiritPossessorEntityRenderState, ZombieModel<SpiritPossessorEntityRenderState>> {
 
-    private static final ResourceLocation TEXTURE_FALLBACK = ResourceLocation.withDefaultNamespace("textures/entity/player/wide/steve.png");
+    private static final Identifier TEXTURE_FALLBACK = Identifier.withDefaultNamespace("textures/entity/player/wide/steve.png");
 
     // 皮肤缓存
-    private final Map<UUID, ResourceLocation> cachedPlayerSkinsByUUID = new HashMap<>();
-    private final Map<String, ResourceLocation> cachedPlayerSkinsByName = new HashMap<>();
+    private final Map<UUID, Identifier> cachedPlayerSkinsByUUID = new HashMap<>();
+    private final Map<String, Identifier> cachedPlayerSkinsByName = new HashMap<>();
     private final Map<UUID, UUID> uuidMissmatches = new HashMap<>();
 
     // 异步获取状态
@@ -81,7 +81,7 @@ public class SpiritPossessorRenderer extends AbstractZombieRenderer<SpiritPosses
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SpiritPossessorEntityRenderState state) {
+    public Identifier getTextureLocation(SpiritPossessorEntityRenderState state) {
         // 优先使用玩家皮肤，如果没有则使用默认僵尸纹理
         if (state.playerUUID != null) {
             // 1. 从UUID缓存获取
@@ -187,7 +187,7 @@ public class SpiritPossessorRenderer extends AbstractZombieRenderer<SpiritPosses
                     }
 
                     if (skinTexture != null) {
-                        ResourceLocation skinTextureLocation = skinTexture.body().texturePath();
+                        Identifier skinTextureLocation = skinTexture.body().texturePath();
 
                         // 处理UUID不匹配的情况
                         if (!receivedGameProfile.id().equals(playerUUID)) {
@@ -221,7 +221,7 @@ public class SpiritPossessorRenderer extends AbstractZombieRenderer<SpiritPosses
                 totalTries++;
                 if (totalTries >= (maxTotalTries - 1)) {
                     // 使用默认皮肤作为回退
-                    ResourceLocation defaultSkin = TEXTURE_FALLBACK;
+                    Identifier defaultSkin = TEXTURE_FALLBACK;
                     cachedPlayerSkinsByUUID.put(playerUUID, defaultSkin);
                     System.out.println("Could not fetch a valid Skin for " + playerName + ", using default skin.");
 
